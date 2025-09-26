@@ -1,0 +1,20 @@
+# Server Configuration
+server:
+  port: 8080
+management:
+  server:
+    port: 8081
+
+# Application
+spring:
+  application:
+    name: productstore
+
+# Flyway
+  flyway:
+    enabled: true
+    locations: classpath:/db/migration/{vendor}
+    baseline-on-migrate: true
+    sql-migration-prefix: V
+    sql-migration-separator: __
+    sql-migration-suffixes: .sql

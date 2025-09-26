@@ -104,21 +104,6 @@ INSERT INTO users (id, username, password, type, email, name, last_name, age, cr
         '2025-09-28 14:10:19.805'
     );
 
-INSERT INTO users (id, username, password, type, email, name, last_name, age, created, updated)
-    VALUES
-    (
-        4,
-        'test_user2',
-        '$2y$12$5oRQHX1I3EGeme5AdWW2X.EX.aXvp4mQFh.iQnmOVC71J4OS46Uje',
-        'USER',
-        'user2@user.net',
-        'user2_first_name',
-        'user2_last_name',
-        '28',
-        '2025-09-28 14:10:19.805',
-        '2025-09-28 14:10:19.805'
-    );
-
 ----------------
 -- USER_ROLES --
 ----------------
@@ -129,4 +114,3 @@ INSERT INTO user_roles (user_entity_id, role_entity_id) VALUES (1, 1);
 -- users --
 INSERT INTO user_roles (user_entity_id, role_entity_id) VALUES (2, 2);
 INSERT INTO user_roles (user_entity_id, role_entity_id) VALUES (3, 2);
-INSERT INTO user_roles (user_entity_id, role_entity_id) VALUES (4, 2);

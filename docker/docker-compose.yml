@@ -1,16 +1,17 @@
 services:
   product-store-postgres:
     container_name: product-store-db
-    image: postgres:18
+    image: postgres:17
     environment:
       - POSTGRES_PORT=${PG_DB_PORT}
       - POSTGRES_USER=${PG_DB_USER}
       - POSTGRES_PASSWORD=${PG_DB_PASSWORD}
       - APP_DB=${APP_PG_DB_NAME}
+      - APP_DB_SCHEMA=${APP_PG_DB_SCHEMA}
       - APP_DB_USER=${APP_PG_DB_USER}
       - APP_DB_PASSWORD=${APP_PG_DB_PASSWORD}
     volumes:
-      - ./database/scripts:/docker-entrypoint-initdb.d/
+      - ./database/scripts/:/docker-entrypoint-initdb.d/
     ports:
       - "5555:5432"
     healthcheck:
