@@ -1,6 +1,6 @@
 # Postgres
 spring:
-  datasource.url: jdbc:postgresql://localhost:5555/productstore
+  datasource.url: jdbc:postgresql://postgres:5432/productstore
   datasource:
     username: app_user
     password: productStore
