@@ -1,6 +1,6 @@
-CREATE sequence pk_product_seq start WITH 4 increment BY 1;
-CREATE sequence pk_roles_seq start WITH 4 increment BY 1;
-CREATE sequence pk_users_seq start WITH 6 increment BY 1;
+CREATE SEQUENCE pk_product_seq start WITH 4 increment BY 1;
+CREATE SEQUENCE pk_roles_seq start WITH 4 increment BY 1;
+CREATE SEQUENCE pk_users_seq start WITH 6 increment BY 1;
 
 CREATE TABLE product (
     id INTEGER NOT NULL,
