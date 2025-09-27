@@ -5,6 +5,6 @@ RUN mvn -f pom.xml -B -DskipTests clean install
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY --from=builder /workspace/target/product-store-*.jar app.jar
+COPY --from=builder /workspace/target/product-store-*.jar product-store.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=postgresql", "app.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=postgresql", "product-store.jar"]

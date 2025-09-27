@@ -1,0 +1,29 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:17
+    environment:
+      - POSTGRES_PORT=${PG_DB_PORT}
+      - POSTGRES_USER=${PG_DB_USER}
+      - POSTGRES_PASSWORD=${PG_DB_PASSWORD}
+      - APP_DB=${APP_PG_DB_NAME}
+      - APP_DB_SCHEMA=${APP_PG_DB_SCHEMA}
+      - APP_DB_USER=${APP_PG_DB_USER}
+      - APP_DB_PASSWORD=${APP_PG_DB_PASSWORD}
+    volumes:
+      - ./database/scripts/:/docker-entrypoint-initdb.d/
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "postgres", "-U", "root"]
+      timeout: 5s
+      interval: 10s
+      retries: 10
+    restart: "no"
+    networks:
+      - product-store-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 256M
