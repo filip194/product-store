@@ -1,13 +1,13 @@
-package com.demo.productstore.application;
+package com.demo.productstore;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProductstoreApplication {
+public class ProductStoreApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProductstoreApplication.class, args);
+        SpringApplication.run(ProductStoreApplication.class, args);
     }
 
 }

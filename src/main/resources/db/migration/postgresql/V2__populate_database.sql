@@ -2,10 +2,11 @@
 -- PRODUCTS --
 --------------
 
-INSERT INTO product.product (id, code, name, description, price_eur, price_usd, is_available, created, updated)
+INSERT INTO product.product (id, external_id, code, name, description, price_eur, price_usd, is_available, created, updated)
     VALUES
     (
         1,
+        '00000000-0000-0000-0000-000000000111',
         'LvSGcjiJEy',
         '34" Monitor',
         'A high-resolution 34-inch monitor with vibrant colors and wide viewing angles.',
@@ -16,10 +17,11 @@ INSERT INTO product.product (id, code, name, description, price_eur, price_usd, 
         '2025-09-28 14:10:19.805'
     );
 
-INSERT INTO product.product (id, code, name, description, price_eur, price_usd, is_available, created, updated)
+INSERT INTO product.product (id, external_id, code, name, description, price_eur, price_usd, is_available, created, updated)
     VALUES
     (
         2,
+        '00000000-0000-0000-0000-000000000112',
         'FUWTRPaT8L',
         'Gaming Laptop',
         'A powerful gaming laptop with the latest graphics card and high refresh rate display.',
@@ -30,10 +32,11 @@ INSERT INTO product.product (id, code, name, description, price_eur, price_usd, 
         '2025-09-28 14:10:19.805'
     );
 
-INSERT INTO product.product (id, code, name, description, price_eur, price_usd, is_available, created, updated)
+INSERT INTO product.product (id, external_id, code, name, description, price_eur, price_usd, is_available, created, updated)
     VALUES
     (
         3,
+        '00000000-0000-0000-0000-000000000113',
         '2ADhZjimcS',
         'Gaming Mouse',
         'An ergonomic gaming mouse with customizable buttons and RGB lighting.',
@@ -48,21 +51,22 @@ INSERT INTO product.product (id, code, name, description, price_eur, price_usd, 
 -- ROLES --
 -----------
 
-INSERT INTO product.roles (id, name)
-    VALUES (1, 'ADMIN');
+INSERT INTO product.roles (id, external_id, name)
+    VALUES (1, '00000000-0000-0000-0000-000000000011', 'ADMIN');
 
-INSERT INTO product.roles (id, name)
-    VALUES (2, 'USER');
+INSERT INTO product.roles (id, external_id, name)
+    VALUES (2, '00000000-0000-0000-0000-000000000012', 'USER');
 
 -----------
 -- USERS --
 -----------
 
 -- passwords for all test users are 123 encrypted with Bcrypt --
-INSERT INTO product.users (id, username, password, type, email, name, last_name, age, created, updated)
+INSERT INTO product.users (id, external_id, username, password, type, email, name, last_name, age, created, updated)
     VALUES
     (
         1,
+        '00000000-0000-0000-0000-000000000001',
         'admin',
         '$2y$12$Q.23eJ7aPlJyviQVVX9WpeSYJ1Nkp7UnqYz30J6CVezbFFUbhLadm',
         'ADMIN',
@@ -74,10 +78,11 @@ INSERT INTO product.users (id, username, password, type, email, name, last_name,
         '2025-09-28 14:10:19.805'
     );
 
-INSERT INTO product.users (id, username, password, type, email, name, last_name, age, created, updated)
+INSERT INTO product.users (id, external_id, username, password, type, email, name, last_name, age, created, updated)
     VALUES
     (
         2,
+        '00000000-0000-0000-0000-000000000002',
         'test_user',
         '$2y$12$vnPcJmY26PobD8Lsgc7/iOz0Sx.A4z/ySLSNM2/Hvb1mv0nDWfk0q',
         'USER',
@@ -85,21 +90,6 @@ INSERT INTO product.users (id, username, password, type, email, name, last_name,
         'user_first_name',
         'user_last_name',
         '30',
-        '2025-09-28 14:10:19.805',
-        '2025-09-28 14:10:19.805'
-    );
-
-INSERT INTO product.users (id, username, password, type, email, name, last_name, age, created, updated)
-    VALUES
-    (
-        3,
-        'test_user1',
-        '$2y$12$mTLZdm70e/m2Qm84XWsHuenY1z6velpD3.T4nhe3TrE6xhATkO4na',
-        'USER',
-        'user1@user.net',
-        'user1_first_name',
-        'user1_last_name',
-        '29',
         '2025-09-28 14:10:19.805',
         '2025-09-28 14:10:19.805'
     );
@@ -113,4 +103,3 @@ INSERT INTO product.user_roles (user_entity_id, role_entity_id) VALUES (1, 1);
 
 -- users --
 INSERT INTO product.user_roles (user_entity_id, role_entity_id) VALUES (2, 2);
-INSERT INTO product.user_roles (user_entity_id, role_entity_id) VALUES (3, 2);
