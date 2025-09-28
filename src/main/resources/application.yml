@@ -10,7 +10,7 @@ spring:
   application:
     name: productstore
 
-# Flyway
+  # Flyway
   flyway:
     enabled: true
     locations: classpath:/db/migration/{vendor}
@@ -18,3 +18,21 @@ spring:
     sql-migration-prefix: V
     sql-migration-separator: __
     sql-migration-suffixes: .sql
+
+# OpenApi
+springdoc:
+  api-docs:
+    path: /v1/api-docs #/v1/api-docs.yaml
+  swagger-ui:
+    disable-swagger-default-url: true
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    groups-order: desc
+  cache:
+    disabled: true
+
+# Custom Properties
+app:
+  release-version: 1.0.0
+  release-name: PRODUCT-STORE

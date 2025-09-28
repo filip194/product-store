@@ -7,15 +7,15 @@ import java.math.RoundingMode;
 
 public record Price(BigDecimal value) {
 
-  public Price {
-    Assert.notNull(value, "value can't be null");
-    if (value.compareTo(BigDecimal.ZERO) < 0) {
-      throw new IllegalArgumentException("value must not be negative");
+    public Price {
+        Assert.notNull(value, "price can not be null");
+        if (value.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("price can not be negative");
+        }
+        value = value.setScale(2, RoundingMode.HALF_UP);
     }
-    value = value.setScale(2, RoundingMode.HALF_UP);
-  }
 
-  public Price multiplyBy(double multiplyValue) {
-    return new Price(value.multiply(new BigDecimal(multiplyValue)));
-  }
+    public Price multiplyBy(double multiplyValue) {
+        return new Price(value.multiply(new BigDecimal(multiplyValue)));
+    }
 }
