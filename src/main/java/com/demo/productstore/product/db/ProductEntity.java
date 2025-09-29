@@ -14,6 +14,9 @@ import java.util.UUID;
 @Data
 public class ProductEntity {
 
+    public ProductEntity() {
+    }
+
     public ProductEntity(UUID externalId, ProductCode code, String name, String description, Price priceEur, Price priceUsd, boolean isAvailable) {
         this.externalId = externalId;
         this.code = code.value();

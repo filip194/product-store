@@ -6,13 +6,10 @@ import com.demo.productstore.product.model.ProductUpdate;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface ProductRepositoryDomain {
 
     Product persist(ProductCreate productCreate);
-
-    Optional<Product> findByExternalId(UUID externalId);
 
     Optional<Product> findByCode(String code);
 

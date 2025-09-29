@@ -1,7 +1,7 @@
 # Postgres
 spring:
-  datasource.url: jdbc:postgresql://localhost:5555/productstore
   datasource:
+    url: jdbc:postgresql://localhost:5555/productstore
     username: app_user
     password: productStore
     driver-class-name: org.postgresql.Driver

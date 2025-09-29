@@ -15,7 +15,6 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -27,13 +26,6 @@ public class ProductRepository implements ProductRepositoryDomain {
     @Override
     public Product persist(ProductCreate productCreate) {
         return ProductMapper.mapToProduct(repository.save(ProductMapper.mapToProductEntity(productCreate)));
-    }
-
-    @Override
-    public Optional<Product> findByExternalId(UUID externalId) {
-        return repository.findByExternalId(externalId)
-                .filter(productEntity -> Objects.isNull(productEntity.getDeleted()))
-                .map(ProductMapper::mapToProduct);
     }
 
     @Override

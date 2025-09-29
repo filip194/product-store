@@ -4,8 +4,10 @@ import com.demo.productstore.apisupport.mapper.ProductDtoMapper;
 import com.demo.productstore.apisupport.model.ProductCreateDto;
 import com.demo.productstore.apisupport.model.ProductDto;
 import com.demo.productstore.apisupport.model.ProductUpdateDto;
+import com.demo.productstore.currency.domain.CurrencyClient;
+import com.demo.productstore.currency.model.CurrencyCountryCode;
 import com.demo.productstore.currency.model.Price;
-import com.demo.productstore.product.db.ProductRepository;
+import com.demo.productstore.product.domain.ProductRepositoryDomain;
 import com.demo.productstore.product.domain.ProductServiceDomain;
 import com.demo.productstore.product.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,23 +25,16 @@ public class ProductService implements ProductServiceDomain {
 
     private static final String FIELD_EXTERNAL_ID = "externalId";
     private static final String FIELD_CODE = "code";
+    private static final String USD_COUNTRY_CODE = "USD";
 
-    private final ProductRepository repository;
+    private final ProductRepositoryDomain repository;
+    private final CurrencyClient client;
 
     @Transactional
     @Override
     public ProductDto createProduct(ProductCreateDto productCreateDto) {
         final var productCreate = ProductDtoMapper.mapProductCreateDtoToProductCreate(productCreateDto);
         return ProductDtoMapper.mapProductToProductDto(repository.persist(productCreate));
-    }
-
-    @Override
-    public ProductDto getProductByExternalId(UUID externalId) {
-        return repository.findByExternalId(externalId)
-                .map(ProductDtoMapper::mapProductToProductDto)
-                .orElseThrow(
-                        () -> new ProductNotFoundException(generateExceptionMessage(FIELD_EXTERNAL_ID, externalId.toString()))
-                );
     }
 
     @Override
@@ -62,9 +56,10 @@ public class ProductService implements ProductServiceDomain {
     @Transactional
     @Override
     public ProductDto updateProductByCode(String code, ProductUpdateDto productUpdateDto) {
-        // TODO fetch real USD price from HNB client
-        final Price priceUsd = new Price(new BigDecimal("0.0"));
+        final var exchangeRate = client.getMidMarketExchangeRate(new CurrencyCountryCode(USD_COUNTRY_CODE));
+        final var priceUsd = new Price(productUpdateDto.getPriceEur()).multiplyBy(exchangeRate);
         final var productUpdate = ProductDtoMapper.mapProductUpdateDtoToProductUpdate(productUpdateDto, priceUsd);
+
         return repository.updateByCode(code, productUpdate)
                 .map(ProductDtoMapper::mapProductToProductDto)
                 .orElseThrow(

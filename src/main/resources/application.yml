@@ -22,12 +22,12 @@ spring:
 # OpenApi
 springdoc:
   api-docs:
-    path: /v1/api-docs #/v1/api-docs.yaml
+    path: /api-docs #/api-docs.yaml
   swagger-ui:
     disable-swagger-default-url: true
-    path: /swagger-ui.html
+    path: /swagger-ui
     operations-sorter: method
-    tags-sorter: alpha
+#    tags-sorter: alpha
     groups-order: desc
   cache:
     disabled: true

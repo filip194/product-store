@@ -5,13 +5,10 @@ import com.demo.productstore.apisupport.model.ProductDto;
 import com.demo.productstore.apisupport.model.ProductUpdateDto;
 
 import java.util.Collection;
-import java.util.UUID;
 
 public interface ProductServiceDomain {
 
     ProductDto createProduct(ProductCreateDto productCreateDto);
-
-    ProductDto getProductByExternalId(UUID externalId);
 
     ProductDto getProductByCode(String code);
 

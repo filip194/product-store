@@ -1,8 +1,10 @@
 package com.demo.productstore.apisupport.openapi;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,31 +22,30 @@ public class OpenApiConfig {
     private String appReleaseName;
 
     @Bean
-    public GroupedOpenApi userApi() {
+    public GroupedOpenApi productApi() {
         return GroupedOpenApi.builder()
                 .group(PRODUCTS_GROUP_NAME)
-                .pathsToMatch("/api/users/**")
+                .pathsToMatch("/api/v1/product/**")
                 .build();
     }
 
     @Bean
     public OpenAPI apiInfo() {
         return new OpenAPI()
-                // TODO enable when security is done
-//                .components(new Components()
-//                        .addSecuritySchemes("basicScheme", new SecurityScheme()
-//                                .type(SecurityScheme.Type.HTTP).scheme("basic")
-//                        )
-//                )
+                .components(new Components()
+                        .addSecuritySchemes("basicScheme", new SecurityScheme()
+                                .type(SecurityScheme.Type.HTTP).scheme("basic")
+                        )
+                )
                 .info(new Info()
                         .title("Product Store API")
-                        .description("Spring Boot 3 product store application with connection HNB API for latest currency exchange rates.")
+                        .description("Spring Boot 3 Product Store application with connection to HNB API for latest currency exchange rates.")
                         .version(appReleaseName + "-" + appReleaseVersion)
                         .license(new License().name("MIT License").url("https://mit-license.org/"))
                 )
                 // TODO enable when API docs are done
 //                .externalDocs(new ExternalDocumentation()
-//                        .description("Fitbit Connect Developer Documentation")
+//                        .description("Product Store Developer Documentation")
 //                        .url(getApiDocsURI())
 //                )
                 ;
