@@ -1,8 +1,12 @@
-CREATE SEQUENCE pk_product_seq start WITH 4 increment BY 1;
-CREATE SEQUENCE pk_roles_seq start WITH 4 increment BY 1;
-CREATE SEQUENCE pk_users_seq start WITH 6 increment BY 1;
+CREATE SCHEMA IF NOT EXISTS product;
 
-CREATE TABLE product (
+SET search_path TO product,public;
+
+CREATE SEQUENCE IF NOT EXISTS product.pk_product_seq start WITH 4 increment BY 1;
+CREATE SEQUENCE IF NOT EXISTS product.pk_roles_seq start WITH 4 increment BY 1;
+CREATE SEQUENCE IF NOT EXISTS product.pk_users_seq start WITH 6 increment BY 1;
+
+CREATE TABLE IF NOT EXISTS product.product (
     id BIGINT NOT NULL,
     external_id UUID NOT NULL UNIQUE,
     code VARCHAR(10) NOT NULL UNIQUE,
@@ -17,7 +21,7 @@ CREATE TABLE product (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS product.users (
     id BIGINT NOT NULL,
     external_id UUID NOT NULL UNIQUE,
     type VARCHAR(50) NOT NULL,
@@ -33,7 +37,7 @@ CREATE TABLE users (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE roles (
+CREATE TABLE IF NOT EXISTS product.roles (
     id BIGINT NOT NULL,
     external_id UUID NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL,
@@ -43,14 +47,14 @@ CREATE TABLE roles (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE user_roles (
+CREATE TABLE IF NOT EXISTS product.user_roles (
     user_entity_id BIGINT NOT NULL,
     role_entity_id BIGINT NOT NULL,
     PRIMARY KEY (user_entity_id, role_entity_id)
 );
 
-ALTER TABLE IF EXISTS user_roles
+ALTER TABLE IF EXISTS product.user_roles
 ADD CONSTRAINT user_entity_id_fk_user_id FOREIGN KEY (user_entity_id) REFERENCES users;
 
-ALTER TABLE IF EXISTS user_roles
+ALTER TABLE IF EXISTS product.user_roles
 ADD CONSTRAINT role_entity_id_fk_role_id FOREIGN KEY (role_entity_id) REFERENCES roles;
