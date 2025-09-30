@@ -23,7 +23,6 @@ import java.util.Collection;
 @Slf4j
 public class ProductService implements ProductServiceDomain {
 
-    private static final String FIELD_EXTERNAL_ID = "externalId";
     private static final String FIELD_CODE = "code";
     private static final String USD_COUNTRY_CODE = "USD";
 
@@ -33,12 +32,15 @@ public class ProductService implements ProductServiceDomain {
     @Transactional
     @Override
     public ProductDto createProduct(ProductCreateDto productCreateDto) {
-        final var productCreate = ProductDtoMapper.mapProductCreateDtoToProductCreate(productCreateDto);
+        log.info("Creating new product with code '{}'", productCreateDto.getCode());
+        final var priceUsd = convertPriceToUsd(productCreateDto.getPriceEur(), USD_COUNTRY_CODE);
+        final var productCreate = ProductDtoMapper.mapProductCreateDtoToProductCreate(productCreateDto, priceUsd);
         return ProductDtoMapper.mapProductToProductDto(repository.persist(productCreate));
     }
 
     @Override
     public ProductDto getProductByCode(String code) {
+        log.info("Fetching product with code '{}'", code);
         return repository.findByCode(code)
                 .map(ProductDtoMapper::mapProductToProductDto)
                 .orElseThrow(
@@ -48,6 +50,7 @@ public class ProductService implements ProductServiceDomain {
 
     @Override
     public Collection<ProductDto> getAllProducts(int pageSize, int pageIndex) {
+        log.info("Fetching all products, page size: {}, page index: {}", pageSize, pageIndex);
         return repository.findAll(pageSize, pageIndex).stream()
                 .map(ProductDtoMapper::mapProductToProductDto)
                 .toList();
@@ -56,25 +59,38 @@ public class ProductService implements ProductServiceDomain {
     @Transactional
     @Override
     public ProductDto updateProductByCode(String code, ProductUpdateDto productUpdateDto) {
-        final var exchangeRate = client.getMidMarketExchangeRate(new CurrencyCountryCode(USD_COUNTRY_CODE));
-        final var priceUsd = new Price(productUpdateDto.getPriceEur()).multiplyBy(exchangeRate);
-        final var productUpdate = ProductDtoMapper.mapProductUpdateDtoToProductUpdate(productUpdateDto, priceUsd);
+        log.info("Fetching product with code '{}' for update", code);
+        return repository.findByCode(code)
+                .map(product -> {
+                    log.info("Updating product with code '{}'", code);
+                    final var priceUsd = convertPriceToUsd(productUpdateDto.getPriceEur(), USD_COUNTRY_CODE);
+                    var productUpdate = ProductDtoMapper.mapProductUpdateDtoToProductUpdate(productUpdateDto, priceUsd);
+                    return repository.updateByCode(code, productUpdate)
+                            .map(ProductDtoMapper::mapProductToProductDto)
+                            .orElseThrow(() -> new ProductNotFoundException(generateExceptionMessage(FIELD_CODE, code)));
+                })
+                .orElseThrow(() -> {
+                    log.error("Product with code '{}' not found during update", code);
+                    return new ProductNotFoundException(generateExceptionMessage(FIELD_CODE, code));
+                });
+    }
 
-        return repository.updateByCode(code, productUpdate)
+    @Transactional
+    @Override
+    public ProductDto deleteProductByCode(String code) {
+        log.info("Deleting product with code '{}'", code);
+        return repository.softDeleteByCode(code)
                 .map(ProductDtoMapper::mapProductToProductDto)
                 .orElseThrow(
                         () -> new ProductNotFoundException(generateExceptionMessage(FIELD_CODE, code))
                 );
     }
 
-    @Transactional
     @Override
-    public ProductDto deleteProductByCode(String code) {
-        return repository.softDeleteByCode(code)
-                .map(ProductDtoMapper::mapProductToProductDto)
-                .orElseThrow(
-                        () -> new ProductNotFoundException(generateExceptionMessage(FIELD_CODE, code))
-                );
+    public Price convertPriceToUsd(BigDecimal priceEur, String currencyCode) {
+        log.info("Converting price '{}' from currency 'EUR' to '{}'", priceEur, currencyCode);
+        var exchangeRate = client.getMidMarketExchangeRate(new CurrencyCountryCode(USD_COUNTRY_CODE));
+        return new Price(priceEur).multiplyBy(exchangeRate);
     }
 
     private static String generateExceptionMessage(String field, String value) {

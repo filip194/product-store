@@ -57,7 +57,7 @@ public class ProductMapper {
                 productCreate.name(),
                 productCreate.description(),
                 productCreate.priceEur(),
-                new Price(new BigDecimal("0.0")), // TODO Default USD price, should be set later
+                productCreate.priceUsd(),
                 productCreate.isAvailable()
         );
     }

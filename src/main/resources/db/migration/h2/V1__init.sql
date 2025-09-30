@@ -1,13 +1,8 @@
 CREATE SCHEMA IF NOT EXISTS product;
-
 SET search_path TO product,public;
 
-CREATE SEQUENCE IF NOT EXISTS product.pk_product_seq start WITH 4 increment BY 1;
-CREATE SEQUENCE IF NOT EXISTS product.pk_roles_seq start WITH 4 increment BY 1;
-CREATE SEQUENCE IF NOT EXISTS product.pk_users_seq start WITH 6 increment BY 1;
-
 CREATE TABLE IF NOT EXISTS product.product (
-    id BIGINT NOT NULL,
+    id BIGSERIAL,
     external_id UUID NOT NULL UNIQUE,
     code VARCHAR(10) NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL,
@@ -15,14 +10,14 @@ CREATE TABLE IF NOT EXISTS product.product (
     price_eur NUMERIC CHECK (price_eur >= 0) NOT NULL,
     price_usd NUMERIC CHECK (price_usd >= 0) NOT NULL, -- calculate WITH help of HNB API
     is_available BOOLEAN DEFAULT TRUE,
-    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted TIMESTAMP,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS product.users (
-    id BIGINT NOT NULL,
+    id BIGSERIAL,
     external_id UUID NOT NULL UNIQUE,
     type VARCHAR(50) NOT NULL,
     username VARCHAR(255) NOT NULL,
@@ -31,18 +26,18 @@ CREATE TABLE IF NOT EXISTS product.users (
     last_name VARCHAR(255),
     email VARCHAR(255) NOT NULL,
     age INT,
-    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted TIMESTAMP,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS product.roles (
-    id BIGINT NOT NULL,
+    id BIGSERIAL,
     external_id UUID NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL,
-    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted TIMESTAMP,
     PRIMARY KEY (id)
 );

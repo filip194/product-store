@@ -2,10 +2,9 @@
 -- PRODUCTS --
 --------------
 
-INSERT INTO product.product (id, external_id, code, name, description, price_eur, price_usd, is_available, created, updated)
+INSERT INTO product.product (external_id, code, name, description, price_eur, price_usd, is_available, created, updated)
     VALUES
     (
-        1,
         '00000000-0000-0000-0000-000000000111',
         'LvSGcjiJEy',
         '34" Monitor',
@@ -17,10 +16,9 @@ INSERT INTO product.product (id, external_id, code, name, description, price_eur
         '2025-09-28 14:10:19.805'
     );
 
-INSERT INTO product.product (id, external_id, code, name, description, price_eur, price_usd, is_available, created, updated)
+INSERT INTO product.product (external_id, code, name, description, price_eur, price_usd, is_available, created, updated)
     VALUES
     (
-        2,
         '00000000-0000-0000-0000-000000000112',
         'FUWTRPaT8L',
         'Gaming Laptop',
@@ -32,10 +30,9 @@ INSERT INTO product.product (id, external_id, code, name, description, price_eur
         '2025-09-28 14:10:19.805'
     );
 
-INSERT INTO product.product (id, external_id, code, name, description, price_eur, price_usd, is_available, created, updated)
+INSERT INTO product.product (external_id, code, name, description, price_eur, price_usd, is_available, created, updated)
     VALUES
     (
-        3,
         '00000000-0000-0000-0000-000000000113',
         '2ADhZjimcS',
         'Gaming Mouse',
@@ -51,21 +48,20 @@ INSERT INTO product.product (id, external_id, code, name, description, price_eur
 -- ROLES --
 -----------
 
-INSERT INTO product.roles (id, external_id, name)
-    VALUES (1, '00000000-0000-0000-0000-000000000011', 'ADMIN');
+INSERT INTO product.roles (external_id, name)
+    VALUES ('00000000-0000-0000-0000-000000000011', 'ADMIN');
 
-INSERT INTO product.roles (id, external_id, name)
-    VALUES (2, '00000000-0000-0000-0000-000000000012', 'USER');
+INSERT INTO product.roles (external_id, name)
+    VALUES ('00000000-0000-0000-0000-000000000012', 'USER');
 
 -----------
 -- USERS --
 -----------
 
 -- passwords for all test users are 123 encrypted with Bcrypt --
-INSERT INTO product.users (id, external_id, username, password, type, email, name, last_name, age, created, updated)
+INSERT INTO product.users (external_id, username, password, type, email, name, last_name, age, created, updated)
     VALUES
     (
-        1,
         '00000000-0000-0000-0000-000000000001',
         'admin',
         '$2y$12$Q.23eJ7aPlJyviQVVX9WpeSYJ1Nkp7UnqYz30J6CVezbFFUbhLadm',
@@ -78,10 +74,9 @@ INSERT INTO product.users (id, external_id, username, password, type, email, nam
         '2025-09-28 14:10:19.805'
     );
 
-INSERT INTO product.users (id, external_id, username, password, type, email, name, last_name, age, created, updated)
+INSERT INTO product.users (external_id, username, password, type, email, name, last_name, age, created, updated)
     VALUES
     (
-        2,
         '00000000-0000-0000-0000-000000000002',
         'test_user',
         '$2y$12$vnPcJmY26PobD8Lsgc7/iOz0Sx.A4z/ySLSNM2/Hvb1mv0nDWfk0q',

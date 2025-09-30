@@ -4,13 +4,15 @@ import com.demo.productstore.currency.model.Price;
 import com.demo.productstore.product.model.ProductCode;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
-@Table(name = "product")
+@Table(name = "product", schema = "product")
 @Data
 public class ProductEntity {
 
@@ -28,8 +30,7 @@ public class ProductEntity {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pk_product_generator")
-    @SequenceGenerator(name = "pk_product_generator", sequenceName = "pk_product_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
@@ -54,9 +55,11 @@ public class ProductEntity {
     @Column(name = "is_available")
     private boolean isAvailable;
 
+    @CreationTimestamp
     @Column(name = "created")
     private Timestamp created;
 
+    @UpdateTimestamp
     @Column(name = "updated")
     private Timestamp updated;
 

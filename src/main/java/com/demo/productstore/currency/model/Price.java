@@ -7,7 +7,9 @@ import java.math.RoundingMode;
 
 public record Price(BigDecimal value) {
 
-    public Price {Assert.notNull(value, "Price can not be null");
+    public Price {
+        Assert.notNull(value, "Price can not be null");
+
         if (value.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Price can not be negative");
         }

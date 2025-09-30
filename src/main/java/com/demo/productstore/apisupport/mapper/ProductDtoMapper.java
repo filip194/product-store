@@ -9,14 +9,19 @@ import com.demo.productstore.product.model.ProductCode;
 import com.demo.productstore.product.model.ProductCreate;
 import com.demo.productstore.product.model.ProductUpdate;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+
 public class ProductDtoMapper {
 
-    public static ProductCreate mapProductCreateDtoToProductCreate(ProductCreateDto productCreateDto) {
+    public static ProductCreate mapProductCreateDtoToProductCreate(ProductCreateDto productCreateDto, Price priceUsd) {
+        final var timestamp = Timestamp.from(Instant.now());
         return new ProductCreate(
                 new ProductCode(productCreateDto.getCode()),
                 productCreateDto.getName(),
                 productCreateDto.getDescription(),
                 new Price(productCreateDto.getPriceEur()),
+                priceUsd,
                 productCreateDto.isAvailable()
         );
     }
