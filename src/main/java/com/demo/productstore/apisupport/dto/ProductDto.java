@@ -1,4 +1,4 @@
-package com.demo.productstore.apisupport.model;
+package com.demo.productstore.apisupport.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

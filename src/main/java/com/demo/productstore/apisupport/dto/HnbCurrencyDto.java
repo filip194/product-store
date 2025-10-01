@@ -1,4 +1,4 @@
-package com.demo.productstore.apisupport.model;
+package com.demo.productstore.apisupport.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,11 +8,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@Schema(title = "Currency information")
+@Schema(title = "HNB Currency information")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CurrencyDto {
+public class HnbCurrencyDto {
 
     @JsonProperty("broj_tecajnice")
     private String exchangeRateNumber;

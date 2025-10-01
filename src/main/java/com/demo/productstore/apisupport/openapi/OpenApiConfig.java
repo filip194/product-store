@@ -13,6 +13,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Collections;
 
+/**
+ * Open API 3 Swagger config class.
+ */
 @Configuration
 public class OpenApiConfig {
 
@@ -24,6 +27,11 @@ public class OpenApiConfig {
     @Value("${app.release-name}")
     private String appReleaseName;
 
+    /**
+     * Grouped Open API bean for product endpoints.
+     *
+     * @return GroupedOpenApi
+     */
     @Bean
     public GroupedOpenApi productApi() {
         return GroupedOpenApi.builder()
@@ -32,6 +40,11 @@ public class OpenApiConfig {
                 .build();
     }
 
+    /**
+     * Open API bean with application info, security and server components.
+     *
+     * @return OpenAPI
+     */
     @Bean
     public OpenAPI apiInfo() {
         return new OpenAPI()

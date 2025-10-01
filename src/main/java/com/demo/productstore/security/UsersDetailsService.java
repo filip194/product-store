@@ -14,6 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.HashSet;
 
+/**
+ * Service for loading user-specific data.
+ * <p>
+ * This class implements the UserDetailsService interface to retrieve user details
+ * from the database and assign authorities based on user roles.
+ * </p>
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -21,6 +28,13 @@ public class UsersDetailsService implements UserDetailsService {
 
     private final UserRepository repository;
 
+    /**
+     * Loads the user details by username.
+     *
+     * @param username the username identifying the user whose data is required.
+     * @return a fully populated UserDetails object (never null)
+     * @throws UsernameNotFoundException if the user could not be found or the user has no GrantedAuthority
+     */
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -34,6 +48,12 @@ public class UsersDetailsService implements UserDetailsService {
         return new UserPrincipal(username, password, authorities);
     }
 
+    /**
+     * Assigns authorities to the user based on their roles.
+     *
+     * @param userEntity the user entity
+     * @return a collection of granted authorities
+     */
     private Collection<? extends GrantedAuthority> assignAuthoritiesToUser(UserEntity userEntity) {
         final Collection<UserAuthority> authorities = new HashSet<>();
         userEntity.getRoles().forEach(roleEntity -> authorities.add(UserAuthority.valueOf(roleEntity.getName())));

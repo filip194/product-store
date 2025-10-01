@@ -7,10 +7,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * Handles exceptions globally for the application.
+ */
 @RestControllerAdvice
 @Slf4j
 public class ApiExceptionHandler {
 
+    /**
+     * Handles ResourceNotFoundException and returns a 404 Not Found response with an error message.
+     *
+     * @param ex the ResourceNotFoundException instance
+     * @return a ResponseEntity containing an ApiResponse with the error details
+     */
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> resourceNotFoundExceptionHandler(ResourceNotFoundException ex) {
         log.error("Resource not found", ex);
@@ -19,6 +28,12 @@ public class ApiExceptionHandler {
                 .body(ApiResponse.withError(ex.getMessage(), String.valueOf(HttpStatus.NOT_FOUND.value())));
     }
 
+    /**
+     * Handles IllegalArgumentException and returns a 400 Bad Request response with an error message.
+     *
+     * @param ex the IllegalArgumentException instance
+     * @return a ResponseEntity containing an ApiResponse with the error details
+     */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse<Void>> illegalArgumentExceptionHandler(IllegalArgumentException ex) {
         log.error("Bad request", ex);
@@ -27,6 +42,12 @@ public class ApiExceptionHandler {
                 .body(ApiResponse.withError(ex.getMessage(), String.valueOf(HttpStatus.BAD_REQUEST.value())));
     }
 
+    /**
+     * Handles Exception and returns a 500 Internal Server Error response with an error message.
+     *
+     * @param ex the Exception instance
+     * @return a ResponseEntity containing an ApiResponse with the error details
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> globalExceptionHandler(Exception ex) {
         log.error("Unexpected exception", ex);
@@ -35,6 +56,12 @@ public class ApiExceptionHandler {
                 .body(ApiResponse.withError(ex.getMessage(), String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value())));
     }
 
+    /**
+     * Handles Error and returns a 500 Internal Server Error response with an error message.
+     *
+     * @param e the Error instance
+     * @return a ResponseEntity containing an ApiResponse with the error details
+     */
     @ExceptionHandler(Error.class)
     public ResponseEntity<ApiResponse<Void>> globalErrorHandler(Error e) {
         log.error("Unexpected error", e);

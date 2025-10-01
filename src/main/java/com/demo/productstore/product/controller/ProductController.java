@@ -1,9 +1,9 @@
 package com.demo.productstore.product.controller;
 
 import com.demo.productstore.apisupport.exception.ApiResponse;
-import com.demo.productstore.apisupport.model.ProductCreateDto;
-import com.demo.productstore.apisupport.model.ProductDto;
-import com.demo.productstore.apisupport.model.ProductUpdateDto;
+import com.demo.productstore.apisupport.dto.ProductCreateDto;
+import com.demo.productstore.apisupport.dto.ProductDto;
+import com.demo.productstore.apisupport.dto.ProductUpdateDto;
 import com.demo.productstore.product.domain.ProductServiceDomain;
 import com.demo.productstore.security.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +20,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * Controller for managing products in the system.
+ * <p>
+ * This class provides APIs for creating, retrieving, updating, and deleting products.
+ * </p>
+ */
 @RestController
 @RequestMapping(path = "/api/v1/product", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "products", description = "Product management API")
@@ -29,6 +35,12 @@ public class ProductController {
 
     private final ProductServiceDomain service;
 
+    /**
+     * Creates a new product.
+     *
+     * @param body the product creation details
+     * @return ResponseEntity containing the created product details
+     */
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new product", security = @SecurityRequirement(name = "basicScheme"))
@@ -37,6 +49,12 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.with(response));
     }
 
+    /**
+     * Retrieves a product by its code.
+     *
+     * @param code the product code
+     * @return ResponseEntity containing the product details
+     */
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @GetMapping("/{code}")
     @Operation(summary = "Get product by code", security = @SecurityRequirement(name = "basicScheme"))
@@ -45,6 +63,13 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.with(response));
     }
 
+    /**
+     * Retrieves all products with optional pagination.
+     *
+     * @param page_size  the number of products per page (default is 50)
+     * @param page_index the page index (default is 0)
+     * @return ResponseEntity containing a collection of product details
+     */
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @GetMapping
     @Operation(summary = "Get all products", security = @SecurityRequirement(name = "basicScheme"))
@@ -58,6 +83,13 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.with(products));
     }
 
+    /**
+     * Updates a product by its code.
+     *
+     * @param code the product code
+     * @param body the product update details
+     * @return ResponseEntity containing the updated product details
+     */
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @PutMapping(value = "/{code}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Update product by code", security = @SecurityRequirement(name = "basicScheme"))
@@ -68,6 +100,12 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.with(response));
     }
 
+    /**
+     * Deletes a product by its code.
+     *
+     * @param code the product code
+     * @return ResponseEntity containing the deleted product details
+     */
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @DeleteMapping(value = "/{code}")
     @Operation(summary = "Delete product by code", security = @SecurityRequirement(name = "basicScheme"))

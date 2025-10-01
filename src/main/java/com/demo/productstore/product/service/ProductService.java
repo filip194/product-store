@@ -1,9 +1,9 @@
 package com.demo.productstore.product.service;
 
 import com.demo.productstore.apisupport.mapper.ProductDtoMapper;
-import com.demo.productstore.apisupport.model.ProductCreateDto;
-import com.demo.productstore.apisupport.model.ProductDto;
-import com.demo.productstore.apisupport.model.ProductUpdateDto;
+import com.demo.productstore.apisupport.dto.ProductCreateDto;
+import com.demo.productstore.apisupport.dto.ProductDto;
+import com.demo.productstore.apisupport.dto.ProductUpdateDto;
 import com.demo.productstore.currency.domain.CurrencyClient;
 import com.demo.productstore.currency.model.CurrencyCountryCode;
 import com.demo.productstore.currency.model.Price;
@@ -18,6 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.Collection;
 
+/**
+ * Service implementation for managing products in the system.
+ * <p>
+ * This class provides methods for creating, retrieving, updating, and deleting products.
+ * It also handles price conversion to USD using an external currency service.
+ * </p>
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -29,6 +36,12 @@ public class ProductService implements ProductServiceDomain {
     private final ProductRepositoryDomain repository;
     private final CurrencyClient client;
 
+    /**
+     * Creates a new product.
+     *
+     * @param productCreateDto the product creation DTO
+     * @return the created Product DTO
+     */
     @Transactional
     @Override
     public ProductDto createProduct(ProductCreateDto productCreateDto) {
@@ -38,6 +51,13 @@ public class ProductService implements ProductServiceDomain {
         return ProductDtoMapper.mapProductToProductDto(repository.persist(productCreate));
     }
 
+    /**
+     * Retrieves a product by its code.
+     *
+     * @param code the product code
+     * @return the Product DTO
+     * @throws ProductNotFoundException if the product with the specified code is not found
+     */
     @Override
     public ProductDto getProductByCode(String code) {
         log.info("Fetching product with code '{}'", code);
@@ -48,6 +68,13 @@ public class ProductService implements ProductServiceDomain {
                 );
     }
 
+    /**
+     * Retrieves all products with pagination.
+     *
+     * @param pageSize  the number of products per page
+     * @param pageIndex the page index (0-based)
+     * @return a collection of Product DTOs
+     */
     @Override
     public Collection<ProductDto> getAllProducts(int pageSize, int pageIndex) {
         log.info("Fetching all products, page size: {}, page index: {}", pageSize, pageIndex);
@@ -56,6 +83,14 @@ public class ProductService implements ProductServiceDomain {
                 .toList();
     }
 
+    /**
+     * Updates a Product by its code with the provided update details.
+     *
+     * @param code             the product code
+     * @param productUpdateDto the product update DTO
+     * @return the updated Product DTO
+     * @throws ProductNotFoundException if the product with the specified code is not found
+     */
     @Transactional
     @Override
     public ProductDto updateProductByCode(String code, ProductUpdateDto productUpdateDto) {
@@ -75,6 +110,13 @@ public class ProductService implements ProductServiceDomain {
                 });
     }
 
+    /**
+     * Deletes a Product by its code.
+     *
+     * @param code the product code
+     * @return the deleted Product DTO
+     * @throws ProductNotFoundException if the product with the specified code is not found
+     */
     @Transactional
     @Override
     public ProductDto deleteProductByCode(String code) {
@@ -86,6 +128,13 @@ public class ProductService implements ProductServiceDomain {
                 );
     }
 
+    /**
+     * Converts a given price in EUR to USD based on the specified currency code.
+     *
+     * @param priceEur     the price in EUR to convert
+     * @param currencyCode the target currency code (e.g., "USD")
+     * @return the converted Price in USD
+     */
     @Override
     public Price convertPriceToUsd(BigDecimal priceEur, String currencyCode) {
         log.info("Converting price '{}' from currency 'EUR' to '{}'", priceEur, currencyCode);
@@ -93,6 +142,13 @@ public class ProductService implements ProductServiceDomain {
         return new Price(priceEur).multiplyBy(exchangeRate);
     }
 
+    /**
+     * Generates a standardized exception message for not found products.
+     *
+     * @param field the field used for lookup (e.g., "code")
+     * @param value the value of the field
+     * @return the generated exception message
+     */
     private static String generateExceptionMessage(String field, String value) {
         return "Product with " + field + ": " + value + " not found";
     }

@@ -6,14 +6,21 @@ import com.demo.productstore.product.model.Product;
 import com.demo.productstore.product.model.ProductCode;
 import com.demo.productstore.product.model.ProductCreate;
 import com.demo.productstore.product.model.ProductUpdate;
-import org.springframework.security.core.parameters.P;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Mapper class for converting between ProductEntity and Product domain models.
+ */
 public class ProductMapper {
 
+    /**
+     * Maps a ProductEntity to a Product domain model.
+     *
+     * @param entity the ProductEntity to map
+     * @return the mapped Product domain model
+     */
     public static Product mapToProduct(ProductEntity entity) {
         return new Product(
                 entity.getId(),
@@ -30,6 +37,12 @@ public class ProductMapper {
         );
     }
 
+    /**
+     * Maps a Product domain model to a ProductEntity.
+     *
+     * @param product the Product domain model to map
+     * @return the mapped ProductEntity
+     */
     public static ProductEntity mapToProductEntity(Product product) {
         return new ProductEntity(
                 product.externalId(),
@@ -42,6 +55,13 @@ public class ProductMapper {
         );
     }
 
+    /**
+     * Updates a ProductEntity with values from a ProductUpdate.
+     * Only non-null values from ProductUpdate will be applied to the entity.
+     *
+     * @param entity        the ProductEntity to update
+     * @param productUpdate the ProductUpdate containing new values
+     */
     public static void mapToProductEntity(ProductEntity entity, ProductUpdate productUpdate) {
         entity.setName(Optional.ofNullable(productUpdate.name()).orElse(entity.getName()));
         entity.setDescription(Optional.ofNullable(productUpdate.description()).orElse(entity.getDescription()));
@@ -50,6 +70,12 @@ public class ProductMapper {
         entity.setAvailable(Optional.of(productUpdate.isAvailable()).orElse(entity.isAvailable()));
     }
 
+    /**
+     * Maps a ProductCreate to a new ProductEntity.
+     *
+     * @param productCreate the ProductCreate to map
+     * @return the mapped ProductEntity
+     */
     public static ProductEntity mapToProductEntity(ProductCreate productCreate) {
         return new ProductEntity(
                 UUID.randomUUID(),

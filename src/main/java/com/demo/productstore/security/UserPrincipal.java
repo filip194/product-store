@@ -6,6 +6,13 @@ import org.springframework.util.Assert;
 
 import java.util.Collection;
 
+/**
+ * Represents the principal details of a user for authentication and authorization purposes.
+ *
+ * @param username    the username of the user
+ * @param password    the password of the user
+ * @param authorities the collection of granted authorities for the user
+ */
 public record UserPrincipal(String username, String password, Collection<? extends GrantedAuthority> authorities)
         implements UserDetails {
 
