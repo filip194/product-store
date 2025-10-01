@@ -29,7 +29,7 @@ public class WebSecurityConfig {
                                 UserAuthority.ADMIN.name()
                         )
                 )
-                .httpBasic(httpSecurityHttpBasicConfigurer -> httpSecurityHttpBasicConfigurer.realmName("Product Store"));
+                .httpBasic(withDefaults());
 
         return http.build();
     }

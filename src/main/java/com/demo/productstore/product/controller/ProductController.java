@@ -15,13 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/api/v1/product", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,28 +29,25 @@ public class ProductController {
 
     private final ProductServiceDomain service;
 
-    @SecurityRequirement(name = "basicAuth")
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Create a new product")
+    @Operation(summary = "Create a new product", security = @SecurityRequirement(name = "basicScheme"))
     public ResponseEntity<ApiResponse<ProductDto>> createProduct(@RequestBody ProductCreateDto body) {
         var response = service.createProduct(body);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.with(response));
     }
 
-    @SecurityRequirement(name = "basicAuth")
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @GetMapping("/{code}")
-    @Operation(summary = "Get product by code")
+    @Operation(summary = "Get product by code", security = @SecurityRequirement(name = "basicScheme"))
     public ResponseEntity<ApiResponse<ProductDto>> getProductByCode(@PathVariable("code") String code) {
         var response = service.getProductByCode(code);
         return ResponseEntity.ok(ApiResponse.with(response));
     }
 
-    @SecurityRequirement(name = "basicAuth")
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @GetMapping
-    @Operation(summary = "Get all products")
+    @Operation(summary = "Get all products", security = @SecurityRequirement(name = "basicScheme"))
     public ResponseEntity<ApiResponse<Collection<ProductDto>>> getAllProducts(
             @RequestParam(value = "page_size", required = false) Integer page_size,
             @RequestParam(value = "page_index", required = false) Integer page_index) {
@@ -64,10 +58,9 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.with(products));
     }
 
-    @SecurityRequirement(name = "basicAuth")
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @PutMapping(value = "/{code}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Update product by code")
+    @Operation(summary = "Update product by code", security = @SecurityRequirement(name = "basicScheme"))
     public ResponseEntity<ApiResponse<ProductDto>> updateProductByCode(
             @PathVariable("code") String code,
             @RequestBody ProductUpdateDto body) {
@@ -75,10 +68,9 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.with(response));
     }
 
-    @SecurityRequirement(name = "basicAuth")
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @DeleteMapping(value = "/{code}")
-    @Operation(summary = "Delete product by code")
+    @Operation(summary = "Delete product by code", security = @SecurityRequirement(name = "basicScheme"))
     public ResponseEntity<ApiResponse<ProductDto>> deleteProductByCode(@PathVariable("code") String code) {
         var response = service.deleteProductByCode(code);
         return ResponseEntity.ok(ApiResponse.with(response));
