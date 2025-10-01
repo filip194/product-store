@@ -1,9 +1,9 @@
 package com.demo.productstore.product.controller;
 
-import com.demo.productstore.apisupport.exception.ApiResponse;
 import com.demo.productstore.apisupport.dto.ProductCreateDto;
 import com.demo.productstore.apisupport.dto.ProductDto;
 import com.demo.productstore.apisupport.dto.ProductUpdateDto;
+import com.demo.productstore.apisupport.exception.ApiResponse;
 import com.demo.productstore.product.domain.ProductServiceDomain;
 import com.demo.productstore.security.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,13 +12,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.Optional;
 
 /**
  * Controller for managing products in the system.
@@ -68,21 +71,18 @@ public class ProductController {
     /**
      * Retrieves all products with optional pagination.
      *
-     * @param page_size  the number of products per page (default is 50)
-     * @param page_index the page index (default is 0)
+     * @param pageable the pagination information
      * @return ResponseEntity containing a collection of product details
      */
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @GetMapping
     @Operation(summary = "Get all products", security = @SecurityRequirement(name = "basicScheme"))
     public ResponseEntity<ApiResponse<Collection<ProductDto>>> getAllProducts(
-            @RequestParam(value = "page_size", required = false) Integer page_size,
-            @RequestParam(value = "page_index", required = false) Integer page_index) {
-        log.info("Received request to get all products with page size '{}' and page index '{}'", page_size, page_index);
-        var pageSize = Optional.ofNullable(page_size).orElse(50);
-        var pageIndex = Optional.ofNullable(page_index).orElse(0);
-// TODO pagination object
-        var products = service.getAllProducts(pageSize, pageIndex);
+            @ParameterObject @PageableDefault(page = 0, size = 5, sort = "name", direction = Sort.Direction.ASC)
+            Pageable pageable) {
+        log.info("Received request to get all products with page size '{}' and page index '{}'",
+                pageable.getPageSize(), pageable.getPageNumber());
+        var products = service.getAllProducts(pageable);
         return ResponseEntity.ok(ApiResponse.with(products));
     }
 

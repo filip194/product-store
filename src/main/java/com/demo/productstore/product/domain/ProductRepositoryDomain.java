@@ -3,6 +3,7 @@ package com.demo.productstore.product.domain;
 import com.demo.productstore.product.model.Product;
 import com.demo.productstore.product.model.ProductCreate;
 import com.demo.productstore.product.model.ProductUpdate;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -31,11 +32,10 @@ public interface ProductRepositoryDomain {
     /**
      * Finds all Products with pagination.
      *
-     * @param pageSize  the number of products per page
-     * @param pageIndex the page index (0-based)
+     * @param pageable the pagination information
      * @return a collection of Products for the specified page
      */
-    Collection<Product> findAll(int pageSize, int pageIndex);
+    Collection<Product> findAll(Pageable pageable);
 
     /**
      * Updates a Product by its code with the provided update details.

@@ -55,14 +55,13 @@ public class ProductRepository implements ProductRepositoryDomain {
     /**
      * Finds all Products with pagination.
      *
-     * @param pageSize  the number of products per page
-     * @param pageIndex the page index (0-based)
+     * @param pageable the pagination information
      * @return a collection of Products for the specified page
      */
     @Override
-    public Collection<Product> findAll(int pageSize, int pageIndex) { // TODO pagination object
-        log.info("Finding all products - page size: {}, page index: {}", pageSize, pageIndex);
-        return repository.findAll(Pageable.ofSize(pageSize).withPage(pageIndex)).stream()
+    public Collection<Product> findAll(Pageable pageable) {
+        log.info("Finding all products - page size: {}, page index: {}", pageable.getPageSize(), pageable.getPageNumber());
+        return repository.findAll(pageable).stream()
                 .filter(productEntity -> Objects.isNull(productEntity.getDeleted()))
                 .map(ProductMapper::mapToProduct)
                 .toList();

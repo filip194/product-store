@@ -4,6 +4,7 @@ import com.demo.productstore.apisupport.dto.ProductCreateDto;
 import com.demo.productstore.apisupport.dto.ProductDto;
 import com.demo.productstore.apisupport.dto.ProductUpdateDto;
 import com.demo.productstore.currency.model.Price;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -32,11 +33,10 @@ public interface ProductServiceDomain {
     /**
      * Retrieves all products with pagination.
      *
-     * @param size the number of products per page
-     * @param page the page index (0-based)
+     * @param pageable the pagination information
      * @return a collection of Product DTOs
      */
-    Collection<ProductDto> getAllProducts(int size, int page);
+    Collection<ProductDto> getAllProducts(Pageable pageable);
 
     /**
      * Updates a Product by its code with the provided update details.

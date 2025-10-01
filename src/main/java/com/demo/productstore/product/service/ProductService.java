@@ -1,9 +1,9 @@
 package com.demo.productstore.product.service;
 
-import com.demo.productstore.apisupport.mapper.ProductDtoMapper;
 import com.demo.productstore.apisupport.dto.ProductCreateDto;
 import com.demo.productstore.apisupport.dto.ProductDto;
 import com.demo.productstore.apisupport.dto.ProductUpdateDto;
+import com.demo.productstore.apisupport.mapper.ProductDtoMapper;
 import com.demo.productstore.currency.domain.CurrencyClient;
 import com.demo.productstore.currency.model.CurrencyCountryCode;
 import com.demo.productstore.currency.model.Price;
@@ -12,6 +12,7 @@ import com.demo.productstore.product.domain.ProductServiceDomain;
 import com.demo.productstore.product.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,14 +72,13 @@ public class ProductService implements ProductServiceDomain {
     /**
      * Retrieves all products with pagination.
      *
-     * @param pageSize  the number of products per page
-     * @param pageIndex the page index (0-based)
+     * @param pageable the pagination information
      * @return a collection of Product DTOs
      */
     @Override
-    public Collection<ProductDto> getAllProducts(int pageSize, int pageIndex) {
-        log.info("Fetching all products, page size: {}, page index: {}", pageSize, pageIndex);
-        return repository.findAll(pageSize, pageIndex).stream()
+    public Collection<ProductDto> getAllProducts(Pageable pageable) {
+        log.info("Fetching all products, page size: {}, page index: {}", pageable.getPageSize(), pageable.getPageNumber());
+        return repository.findAll(pageable).stream()
                 .map(ProductDtoMapper::mapProductToProductDto)
                 .toList();
     }
