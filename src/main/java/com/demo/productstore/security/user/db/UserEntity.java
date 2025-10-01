@@ -1,7 +1,9 @@
 package com.demo.productstore.security.user.db;
 
+import com.demo.productstore.security.UserType;
 import com.demo.productstore.security.role.db.RoleEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -16,13 +18,14 @@ import java.util.UUID;
         @UniqueConstraint(columnNames = {"user_id", "username"}, name = "user_id_and_username_unique")
 })
 @Data
+@AllArgsConstructor
 public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pk_users_generator")
     @SequenceGenerator(name = "pk_users_generator", sequenceName = "pk_users_seq", allocationSize = 1)
     @Column(name = "id", updatable = false, nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "external_id")
     private UUID externalId;

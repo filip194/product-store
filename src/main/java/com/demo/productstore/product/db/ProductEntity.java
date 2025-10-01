@@ -3,6 +3,7 @@ package com.demo.productstore.product.db;
 import com.demo.productstore.currency.model.Price;
 import com.demo.productstore.product.model.ProductCode;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "product", schema = "product")
 @Data
+@AllArgsConstructor
 public class ProductEntity {
 
     public ProductEntity() {
