@@ -28,7 +28,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping(path = "/api/v1/product", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "products", description = "Product management API")
+@Tag(name = "product", description = "Product management API")
 @RequiredArgsConstructor
 @Slf4j
 public class ProductController {

@@ -19,7 +19,7 @@ import java.util.Collections;
 @Configuration
 public class OpenApiConfig {
 
-    public static final String PRODUCTS_GROUP_NAME = "products";
+    public static final String PRODUCTS_GROUP_NAME = "product";
 
     @Value("${app.release-version}")
     private String appReleaseVersion;
