@@ -24,10 +24,25 @@ This application provides one API: _product_.
 
 ### Running application
 
-- open project root folder in terminal
-- run command: docker compose up -d (this will start PostgreSQL database in Docker container and will run Spring Boot app, both in detached mode)
-- application will be available at: http://localhost:8080
-- to stop application run command: docker compose down
+- open project root directory in terminal
+- navigate to directory `docker`
+- run command: 
+  - `docker compose up`
+  - it will start PostgreSQL database in Docker container and will run Spring Boot app
+- application will be available at:
+  - http://localhost:8080
+- Swagger UI will be available at:
+  - http://localhost:8080/swagger-ui
+- to stop application press `CTRL + C` in terminal
+- to stop docker containers run:
+  - `docker compose down`
+
+#### Run configurations
+
+There are also three run configurations available (if using IntelliJ IDEA):
+- App - postgresql - runs application with PostgreSQL database (for production purposes and available in docker compose)
+- App - postgresdev - runs application with PostgreSQL database (for development purposes)
+- App - h2dev - runs application with H2 in-memory database (for development purposes)
 
 ### Logging into application
 
