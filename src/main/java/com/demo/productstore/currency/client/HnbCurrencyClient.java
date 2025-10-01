@@ -3,6 +3,7 @@ package com.demo.productstore.currency.client;
 import com.demo.productstore.apisupport.dto.HnbCurrencyDto;
 import com.demo.productstore.currency.domain.CurrencyClient;
 import com.demo.productstore.currency.model.CurrencyCountryCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.Objects;
  * Client for fetching currency exchange rates from the Croatian National Bank (HNB) API.
  */
 @Service
+@Slf4j
 public class HnbCurrencyClient implements CurrencyClient {
 
     private static final String HNB_API_BASE_URL = "https://api.hnb.hr/tecajn-eur";
@@ -30,6 +32,7 @@ public class HnbCurrencyClient implements CurrencyClient {
      */
     @Override
     public Double getMidMarketExchangeRate(CurrencyCountryCode currencyCountryCode) {
+        log.info("Fetching mid market exchange rate for currency: {}", currencyCountryCode.value());
         final var response = callHnbExchangeRateClient(currencyCountryCode);
 
         if (response.getStatusCode().is2xxSuccessful() && Objects.nonNull(response.getBody()) &&
@@ -39,9 +42,12 @@ public class HnbCurrencyClient implements CurrencyClient {
             try {
                 return Double.valueOf(midRate.replace(',', '.'));
             } catch (NumberFormatException ex) {
+                log.error("Failed to parse mid market exchange rate: {}", midRate, ex);
                 throw new IllegalStateException("HNB API returned invalid mid market exchange rate value: " + midRate);
             }
         }
+        log.error("Failed to fetch mid market exchange rate from HNB API for currency: {}. Response: {}",
+                currencyCountryCode.value().toUpperCase(), response);
         throw new IllegalStateException("Failed to fetch mid market exchange rate from HNB API for currency: " + currencyCountryCode.value());
     }
 
@@ -52,6 +58,7 @@ public class HnbCurrencyClient implements CurrencyClient {
      * @return a ResponseEntity containing an array of HnbCurrencyDto objects
      */
     private ResponseEntity<HnbCurrencyDto[]> callHnbExchangeRateClient(CurrencyCountryCode currencyCountryCode) {
+        log.info("Calling HNB API for currency exchange rate: {}", currencyCountryCode.value());
         return RestClient.create(HNB_API_BASE_URL)
                 .get()
                 .uri(uriBuilder -> uriBuilder

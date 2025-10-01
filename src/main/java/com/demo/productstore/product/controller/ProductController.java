@@ -45,6 +45,7 @@ public class ProductController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new product", security = @SecurityRequirement(name = "basicScheme"))
     public ResponseEntity<ApiResponse<ProductDto>> createProduct(@RequestBody ProductCreateDto body) {
+        log.info("Received request to create product with code '{}'", body.getCode());
         var response = service.createProduct(body);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.with(response));
     }
@@ -59,6 +60,7 @@ public class ProductController {
     @GetMapping("/{code}")
     @Operation(summary = "Get product by code", security = @SecurityRequirement(name = "basicScheme"))
     public ResponseEntity<ApiResponse<ProductDto>> getProductByCode(@PathVariable("code") String code) {
+        log.info("Received request to get product with code '{}'", code);
         var response = service.getProductByCode(code);
         return ResponseEntity.ok(ApiResponse.with(response));
     }
@@ -76,9 +78,10 @@ public class ProductController {
     public ResponseEntity<ApiResponse<Collection<ProductDto>>> getAllProducts(
             @RequestParam(value = "page_size", required = false) Integer page_size,
             @RequestParam(value = "page_index", required = false) Integer page_index) {
+        log.info("Received request to get all products with page size '{}' and page index '{}'", page_size, page_index);
         var pageSize = Optional.ofNullable(page_size).orElse(50);
         var pageIndex = Optional.ofNullable(page_index).orElse(0);
-
+// TODO pagination object
         var products = service.getAllProducts(pageSize, pageIndex);
         return ResponseEntity.ok(ApiResponse.with(products));
     }
@@ -96,6 +99,7 @@ public class ProductController {
     public ResponseEntity<ApiResponse<ProductDto>> updateProductByCode(
             @PathVariable("code") String code,
             @RequestBody ProductUpdateDto body) {
+        log.info("Received request to update product with code '{}'", code);
         var response = service.updateProductByCode(code, body);
         return ResponseEntity.ok(ApiResponse.with(response));
     }
@@ -110,6 +114,7 @@ public class ProductController {
     @DeleteMapping(value = "/{code}")
     @Operation(summary = "Delete product by code", security = @SecurityRequirement(name = "basicScheme"))
     public ResponseEntity<ApiResponse<ProductDto>> deleteProductByCode(@PathVariable("code") String code) {
+        log.info("Received request to delete product with code '{}'", code);
         var response = service.deleteProductByCode(code);
         return ResponseEntity.ok(ApiResponse.with(response));
     }

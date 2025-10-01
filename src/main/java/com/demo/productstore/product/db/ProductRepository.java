@@ -34,6 +34,7 @@ public class ProductRepository implements ProductRepositoryDomain {
      */
     @Override
     public Product persist(ProductCreate productCreate) {
+        log.info("Persisting new product with code '{}'", productCreate.code());
         return ProductMapper.mapToProduct(repository.save(ProductMapper.mapToProductEntity(productCreate)));
     }
 
@@ -45,6 +46,7 @@ public class ProductRepository implements ProductRepositoryDomain {
      */
     @Override
     public Optional<Product> findByCode(String code) {
+        log.info("Finding product by code '{}'", code);
         return repository.findByCode(code)
                 .filter(productEntity -> Objects.isNull(productEntity.getDeleted()))
                 .map(ProductMapper::mapToProduct);
@@ -59,6 +61,7 @@ public class ProductRepository implements ProductRepositoryDomain {
      */
     @Override
     public Collection<Product> findAll(int pageSize, int pageIndex) { // TODO pagination object
+        log.info("Finding all products - page size: {}, page index: {}", pageSize, pageIndex);
         return repository.findAll(Pageable.ofSize(pageSize).withPage(pageIndex)).stream()
                 .filter(productEntity -> Objects.isNull(productEntity.getDeleted()))
                 .map(ProductMapper::mapToProduct)
@@ -74,6 +77,7 @@ public class ProductRepository implements ProductRepositoryDomain {
      */
     @Override
     public Optional<Product> updateByCode(String code, ProductUpdate productUpdate) {
+        log.info("Updating product with code '{}'", code);
         final var entity = repository
                 .findByCode(code)
                 .filter(productEntity -> Objects.isNull(productEntity.getDeleted()));
@@ -82,8 +86,10 @@ public class ProductRepository implements ProductRepositoryDomain {
             final var updatedEntity = entity.get();
             ProductMapper.mapToProductEntity(updatedEntity, productUpdate);
             updatedEntity.setUpdated(Timestamp.from(Instant.now()));
+            log.info("Product with code '{}' updated", code);
             return Optional.of(ProductMapper.mapToProduct(repository.save(updatedEntity)));
         }
+        log.warn("Product with code '{}' not found for update", code);
         return Optional.empty();
     }
 
@@ -95,6 +101,7 @@ public class ProductRepository implements ProductRepositoryDomain {
      */
     @Override
     public Optional<Product> softDeleteByCode(String code) {
+        log.info("Soft deleting product with code '{}'", code);
         final var entity = repository
                 .findByCode(code)
                 .filter(productEntity -> Objects.isNull(productEntity.getDeleted()));
@@ -102,8 +109,10 @@ public class ProductRepository implements ProductRepositoryDomain {
         if (entity.isPresent()) {
             entity.get().setDeleted(Timestamp.from(Instant.now()));
             repository.save(entity.get());
+            log.info("Product with code '{}' soft deleted", code);
             return Optional.of(ProductMapper.mapToProduct(entity.get()));
         }
+        log.warn("Product with code '{}' not found for soft delete", code);
         return Optional.empty();
     }
 
