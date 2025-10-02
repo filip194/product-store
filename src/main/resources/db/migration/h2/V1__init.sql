@@ -1,5 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS product;
-SET search_path TO product,public;
+
+SET SCHEMA product;
 
 CREATE TABLE IF NOT EXISTS product.product (
     id BIGSERIAL,

@@ -17,6 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnableWireMock
 class HnbCurrencyClientTest {
 
+    private final static String HNB_RESPONSE_OK = "[{\"broj_tecajnice\":\"193\",\"datum_primjene\":\"2025-10-02\",\"drzava\":\"SAD\",\"drzava_iso\":\"USA\",\"kupovni_tecaj\":\"1,174200\",\"prodajni_tecaj\":\"1,170600\",\"sifra_valute\":\"840\",\"srednji_tecaj\":\"1,172400\",\"valuta\":\"USD\"}]";
+    private final static String HNB_RESPONSE_INVALID_NUMBER = "[{\"broj_tecajnice\":\"193\",\"datum_primjene\":\"2025-10-02\",\"drzava\":\"SAD\",\"drzava_iso\":\"USA\",\"kupovni_tecaj\":\"1,174200\",\"prodajni_tecaj\":\"1,170600\",\"sifra_valute\":\"840\",\"srednji_tecaj\":\"invalid\",\"valuta\":\"USD\"}]";
+    private final static String HNB_RESPONSE_EMPTY = "[]";
+
     @Value("${wiremock.server.port}")
     protected int wiremockPort;
 
@@ -30,19 +34,19 @@ class HnbCurrencyClientTest {
     void getMidMarketExchangeRate_ReturnsParsedDouble() {
         stubFor(get(urlPathEqualTo("/v3"))
                 .withQueryParam("valuta", equalTo("USD"))
-                .willReturn(okJson("[{\"midRate\":\"7,45\"}]")));
+                .willReturn(okJson(HNB_RESPONSE_OK)));
 
-        Double rate = client.getMidMarketExchangeRate(new CurrencyCountryCode("USD"));
-        assertEquals(7.45, rate);
+        final Double rate = client.getMidMarketExchangeRate(new CurrencyCountryCode("USD"));
+        assertEquals(1.17, rate);
     }
 
     @Test
     void getMidMarketExchangeRate_ThrowsOnInvalidNumber() {
         stubFor(get(urlPathEqualTo("/v3"))
                 .withQueryParam("valuta", equalTo("USD"))
-                .willReturn(okJson("[{\"midRate\":\"invalid\"}]")));
+                .willReturn(okJson(HNB_RESPONSE_INVALID_NUMBER)));
 
-        IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
+        final IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
                 client.getMidMarketExchangeRate(new CurrencyCountryCode("USD")));
         assertTrue(ex.getMessage().contains("invalid mid market exchange rate value"));
     }
@@ -51,9 +55,9 @@ class HnbCurrencyClientTest {
     void getMidMarketExchangeRate_ThrowsOnEmptyResponse() {
         stubFor(get(urlPathEqualTo("/v3"))
                 .withQueryParam("valuta", equalTo("USD"))
-                .willReturn(okJson("[]")));
+                .willReturn(okJson(HNB_RESPONSE_EMPTY)));
 
-        IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
+        final IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
                 client.getMidMarketExchangeRate(new CurrencyCountryCode("USD")));
         assertTrue(ex.getMessage().contains("Failed to fetch mid market exchange rate"));
     }
