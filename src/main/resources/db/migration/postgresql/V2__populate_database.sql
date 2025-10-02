@@ -75,7 +75,7 @@ INSERT INTO product.users (external_id, username, password, type, email, name, l
     VALUES
     (
         '00000000-0000-0000-0000-000000000002',
-        'test_user',
+        'user',
         '$2y$12$vnPcJmY26PobD8Lsgc7/iOz0Sx.A4z/ySLSNM2/Hvb1mv0nDWfk0q',
         'USER',
         'user@user.net',
