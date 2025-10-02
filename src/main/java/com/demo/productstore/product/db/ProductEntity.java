@@ -21,13 +21,12 @@ public class ProductEntity {
     public ProductEntity() {
     }
 
-    public ProductEntity(UUID externalId, ProductCode code, String name, String description, Price priceEur, Price priceUsd, boolean isAvailable) {
+    public ProductEntity(UUID externalId, ProductCode code, String name, String description, Price priceEur, boolean isAvailable) {
         this.externalId = externalId;
         this.code = code.value();
         this.name = name;
         this.description = description;
         this.priceEur = priceEur.value();
-        this.priceUsd = priceUsd.value();
         this.isAvailable = isAvailable;
     }
 
@@ -51,9 +50,6 @@ public class ProductEntity {
     @Column(name = "price_eur")
     private BigDecimal priceEur;
 
-    @Column(name = "price_usd")
-    private BigDecimal priceUsd;
-
     @Column(name = "is_available")
     private boolean isAvailable;
 
@@ -64,8 +60,5 @@ public class ProductEntity {
     @UpdateTimestamp
     @Column(name = "updated")
     private Timestamp updated;
-
-    @Column(name = "deleted")
-    private Timestamp deleted;
 
 }

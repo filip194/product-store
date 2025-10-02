@@ -60,9 +60,6 @@ public class UserEntity {
     @UpdateTimestamp
     private Timestamp updated;
 
-    @Column(name = "deleted")
-    private Timestamp deleted;
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "user_roles", schema = "product",
             joinColumns = @JoinColumn(name = "user_entity_id", referencedColumnName = "id",

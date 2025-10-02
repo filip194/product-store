@@ -28,4 +28,10 @@ public interface ProductJpaRepository extends JpaRepository<ProductEntity, Long>
      */
     Optional<ProductEntity> findByExternalId(UUID externalId);
 
+    /**
+     * Deletes a ProductEntity by its code.
+     *
+     * @param code the product code
+     */
+    void deleteByCode(String code);
 }

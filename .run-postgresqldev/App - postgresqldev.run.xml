@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="App - postgresqldev" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="com.demo.productstore.ProductStoreApplication" />
-    <module name="productstore" />
+    <module name="product-store" />
     <option name="VM_PARAMETERS" value="-Dspring.profiles.active=postgresqldev" />
     <method v="2">
       <option name="Make" enabled="true" />

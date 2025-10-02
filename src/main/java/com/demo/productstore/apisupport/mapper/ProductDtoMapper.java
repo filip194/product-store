@@ -9,8 +9,7 @@ import com.demo.productstore.product.model.ProductCode;
 import com.demo.productstore.product.model.ProductCreate;
 import com.demo.productstore.product.model.ProductUpdate;
 
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.math.BigDecimal;
 
 /**
  * Mapper class for converting between Product DTOs and domain models.
@@ -21,17 +20,14 @@ public class ProductDtoMapper {
      * Maps ProductCreateDto to ProductCreate domain model.
      *
      * @param productCreateDto the product creation DTO
-     * @param priceUsd         the price in USD
      * @return the ProductCreate domain model
      */
-    public static ProductCreate mapProductCreateDtoToProductCreate(ProductCreateDto productCreateDto, Price priceUsd) {
-        final var timestamp = Timestamp.from(Instant.now());
+    public static ProductCreate mapProductCreateDtoToProductCreate(ProductCreateDto productCreateDto) {
         return new ProductCreate(
                 new ProductCode(productCreateDto.getCode()),
                 productCreateDto.getName(),
                 productCreateDto.getDescription(),
                 new Price(productCreateDto.getPriceEur()),
-                priceUsd,
                 productCreateDto.isAvailable()
         );
     }
@@ -59,18 +55,17 @@ public class ProductDtoMapper {
      * @param product the Product domain model
      * @return the ProductDto
      */
-    public static ProductDto mapProductToProductDto(Product product) {
+    public static ProductDto mapProductToProductDto(Product product, Price priceUsd) {
         return new ProductDto(
                 product.externalId(),
                 product.code().value(),
                 product.name(),
                 product.description(),
                 product.priceEur().value(),
-                product.priceUsd().value(),
+                priceUsd.value(),
                 product.isAvailable(),
                 product.created(),
-                product.updated(),
-                product.deleted()
+                product.updated()
         );
     }
 }

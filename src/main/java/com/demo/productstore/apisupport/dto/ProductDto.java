@@ -49,14 +49,4 @@ public class ProductDto {
     @Schema(name = "updated", example = "2025-10-05T14:48:00.000")
     private Timestamp updated;
 
-    @Schema(name = "deleted", example = "2025-10-05T14:48:00.000")
-    private Timestamp deleted;
-
-    public void setPriceEur(BigDecimal priceEur) {
-        if (Objects.nonNull(priceEur)) {
-            this.priceEur = priceEur.setScale(2, RoundingMode.HALF_UP);
-        } else {
-            this.priceEur = null;
-        }
-    }
 }

@@ -29,13 +29,12 @@ class ProductDtoMapperTest {
         dto.setAvailable(true);
 
         final Price priceUsd = new Price(BigDecimal.valueOf(12.0));
-        final ProductCreate productCreate = ProductDtoMapper.mapProductCreateDtoToProductCreate(dto, priceUsd);
+        final ProductCreate productCreate = ProductDtoMapper.mapProductCreateDtoToProductCreate(dto);
 
         assertEquals(dto.getCode(), productCreate.code().value());
         assertEquals(dto.getName(), productCreate.name());
         assertEquals(dto.getDescription(), productCreate.description());
         assertEquals(dto.getPriceEur(), productCreate.priceEur().value());
-        assertEquals(priceUsd, productCreate.priceUsd());
         assertEquals(dto.isAvailable(), productCreate.isAvailable());
     }
 
@@ -69,24 +68,21 @@ class ProductDtoMapperTest {
                 "Test Product",
                 "Test Description",
                 new Price(BigDecimal.valueOf(10.5)),
-                new Price(BigDecimal.valueOf(12.0)),
                 true,
                 timestamp,
-                timestamp,
-                null
+                timestamp
         );
 
-        final ProductDto dto = ProductDtoMapper.mapProductToProductDto(product);
+
+        final ProductDto dto = ProductDtoMapper.mapProductToProductDto(product, new Price(BigDecimal.valueOf(12.0)));
 
         assertEquals(product.externalId(), dto.getExternalId());
         assertEquals(product.code().value(), dto.getCode());
         assertEquals(product.name(), dto.getName());
         assertEquals(product.description(), dto.getDescription());
         assertEquals(product.priceEur().value(), dto.getPriceEur());
-        assertEquals(product.priceUsd().value(), dto.getPriceUsd());
         assertEquals(product.isAvailable(), dto.isAvailable());
         assertEquals(product.created(), dto.getCreated());
         assertEquals(product.updated(), dto.getUpdated());
-        assertEquals(product.deleted(), dto.getDeleted());
     }
 }

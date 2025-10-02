@@ -30,11 +30,9 @@ class ProductMapperTest {
         entity.setName("Test Product");
         entity.setDescription("Test Description");
         entity.setPriceEur(BigDecimal.valueOf(10.50));
-        entity.setPriceUsd(BigDecimal.valueOf(12.00));
         entity.setAvailable(true);
         entity.setCreated(timestamp);
         entity.setUpdated(timestamp);
-        entity.setDeleted(null);
 
         final Product product = ProductMapper.mapToProduct(entity);
 
@@ -44,7 +42,6 @@ class ProductMapperTest {
         assertEquals("Test Product", product.name());
         assertEquals("Test Description", product.description());
         assertEquals(BigDecimal.valueOf(10.50).setScale(2, RoundingMode.HALF_UP), product.priceEur().value());
-        assertEquals(BigDecimal.valueOf(12.00).setScale(2, RoundingMode.HALF_UP), product.priceUsd().value());
         assertTrue(product.isAvailable());
     }
 
@@ -60,11 +57,9 @@ class ProductMapperTest {
                 "Test Product",
                 "Test Description",
                 new Price(BigDecimal.valueOf(10.50)),
-                new Price(BigDecimal.valueOf(12.00)),
                 true,
                 timestamp,
-                timestamp,
-                null
+                timestamp
         );
 
         final ProductEntity entity = ProductMapper.mapProductToProductEntity(product);
@@ -74,7 +69,6 @@ class ProductMapperTest {
         assertEquals("Test Product", entity.getName());
         assertEquals("Test Description", entity.getDescription());
         assertEquals(BigDecimal.valueOf(10.50).setScale(2, RoundingMode.HALF_UP), entity.getPriceEur());
-        assertEquals(BigDecimal.valueOf(12.00).setScale(2, RoundingMode.HALF_UP), entity.getPriceUsd());
         assertTrue(entity.isAvailable());
     }
 
@@ -85,7 +79,6 @@ class ProductMapperTest {
         entity.setName("Old Name");
         entity.setDescription("Old Description");
         entity.setPriceEur(BigDecimal.valueOf(10.00));
-        entity.setPriceUsd(BigDecimal.valueOf(11.00));
         entity.setAvailable(false);
 
         final ProductUpdate update = new ProductUpdate(
@@ -101,7 +94,6 @@ class ProductMapperTest {
         assertEquals("New Name", entity.getName());
         assertEquals("Old Description", entity.getDescription());
         assertEquals(BigDecimal.valueOf(20.00).setScale(2, RoundingMode.HALF_UP), entity.getPriceEur());
-        assertEquals(BigDecimal.valueOf(22.00).setScale(2, RoundingMode.HALF_UP), entity.getPriceUsd());
         assertTrue(entity.isAvailable());
     }
 
@@ -112,7 +104,6 @@ class ProductMapperTest {
                 "Test Product",
                 "Test Description",
                 new Price(BigDecimal.valueOf(10.50)),
-                new Price(BigDecimal.valueOf(12.00)),
                 true
         );
 
@@ -123,7 +114,6 @@ class ProductMapperTest {
         assertEquals("Test Product", entity.getName());
         assertEquals("Test Description", entity.getDescription());
         assertEquals(BigDecimal.valueOf(10.50).setScale(2, RoundingMode.HALF_UP), entity.getPriceEur());
-        assertEquals(BigDecimal.valueOf(12.00).setScale(2, RoundingMode.HALF_UP), entity.getPriceUsd());
         assertTrue(entity.isAvailable());
     }
 }

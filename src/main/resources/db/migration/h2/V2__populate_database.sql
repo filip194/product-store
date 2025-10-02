@@ -2,7 +2,7 @@
 -- PRODUCTS --
 --------------
 
-INSERT INTO product.product (external_id, code, name, description, price_eur, price_usd, is_available, created, updated)
+INSERT INTO product.product (external_id, code, name, description, price_eur, is_available, created, updated)
     VALUES
     (
         '00000000-0000-0000-0000-000000000111',
@@ -10,13 +10,12 @@ INSERT INTO product.product (external_id, code, name, description, price_eur, pr
         '34" Monitor',
         'A high-resolution 34-inch monitor with vibrant colors and wide viewing angles.',
         349.99,
-        410.85,
         true,
         '2025-09-28 14:10:19.805',
         '2025-09-28 14:10:19.805'
     );
 
-INSERT INTO product.product (external_id, code, name, description, price_eur, price_usd, is_available, created, updated)
+INSERT INTO product.product (external_id, code, name, description, price_eur, is_available, created, updated)
     VALUES
     (
         '00000000-0000-0000-0000-000000000112',
@@ -24,13 +23,12 @@ INSERT INTO product.product (external_id, code, name, description, price_eur, pr
         'Gaming Laptop',
         'A powerful gaming laptop with the latest graphics card and high refresh rate display.',
         1299.99,
-        1526.06,
         false,
         '2025-09-28 14:10:19.805',
         '2025-09-28 14:10:19.805'
     );
 
-INSERT INTO product.product (external_id, code, name, description, price_eur, price_usd, is_available, created, updated)
+INSERT INTO product.product (external_id, code, name, description, price_eur, is_available, created, updated)
     VALUES
     (
         '00000000-0000-0000-0000-000000000113',
@@ -38,7 +36,6 @@ INSERT INTO product.product (external_id, code, name, description, price_eur, pr
         'Gaming Mouse',
         'An ergonomic gaming mouse with customizable buttons and RGB lighting.',
         79.99,
-        93.90,
         true,
         '2025-09-28 14:10:19.805',
         '2025-09-28 14:10:19.805'

@@ -47,9 +47,9 @@ public class ProductService implements ProductServiceDomain {
     @Override
     public ProductDto createProduct(ProductCreateDto productCreateDto) {
         log.info("Creating new product with code '{}'", productCreateDto.getCode());
+        final var productCreate = ProductDtoMapper.mapProductCreateDtoToProductCreate(productCreateDto);
         final var priceUsd = convertPriceToUsd(productCreateDto.getPriceEur(), USD_COUNTRY_CODE);
-        final var productCreate = ProductDtoMapper.mapProductCreateDtoToProductCreate(productCreateDto, priceUsd);
-        return ProductDtoMapper.mapProductToProductDto(repository.persist(productCreate));
+        return ProductDtoMapper.mapProductToProductDto(repository.persist(productCreate), priceUsd);
     }
 
     /**
@@ -63,7 +63,10 @@ public class ProductService implements ProductServiceDomain {
     public ProductDto getProductByCode(String code) {
         log.info("Fetching product with code '{}'", code);
         return repository.findByCode(code)
-                .map(ProductDtoMapper::mapProductToProductDto)
+                .map(product -> {
+                    final var priceUsd = convertPriceToUsd(product.priceEur().value(), USD_COUNTRY_CODE);
+                    return ProductDtoMapper.mapProductToProductDto(product, priceUsd);
+                })
                 .orElseThrow(
                         () -> new ProductNotFoundException(generateExceptionMessage(FIELD_CODE, code))
                 );
@@ -79,7 +82,10 @@ public class ProductService implements ProductServiceDomain {
     public Collection<ProductDto> getAllProducts(Pageable pageable) {
         log.info("Fetching all products, page size: {}, page index: {}", pageable.getPageSize(), pageable.getPageNumber());
         return repository.findAll(pageable).stream()
-                .map(ProductDtoMapper::mapProductToProductDto)
+                .map(product -> {
+                    final var priceUsd = convertPriceToUsd(product.priceEur().value(), USD_COUNTRY_CODE);
+                    return ProductDtoMapper.mapProductToProductDto(product, priceUsd);
+                })
                 .toList();
     }
 
@@ -101,7 +107,7 @@ public class ProductService implements ProductServiceDomain {
                     final var priceUsd = convertPriceToUsd(productUpdateDto.getPriceEur(), USD_COUNTRY_CODE);
                     var productUpdate = ProductDtoMapper.mapProductUpdateDtoToProductUpdate(productUpdateDto, priceUsd);
                     return repository.updateByCode(code, productUpdate)
-                            .map(ProductDtoMapper::mapProductToProductDto)
+                            .map(product1 -> ProductDtoMapper.mapProductToProductDto(product1, priceUsd))
                             .orElseThrow(() -> new ProductNotFoundException(generateExceptionMessage(FIELD_CODE, code)));
                 })
                 .orElseThrow(() -> {
@@ -114,18 +120,16 @@ public class ProductService implements ProductServiceDomain {
      * Deletes a Product by its code.
      *
      * @param code the product code
-     * @return the deleted Product DTO
      * @throws ProductNotFoundException if the product with the specified code is not found
      */
     @Transactional
     @Override
-    public ProductDto deleteProductByCode(String code) {
+    public boolean deleteProductByCode(String code) {
         log.info("Deleting product with code '{}'", code);
-        return repository.softDeleteByCode(code)
-                .map(ProductDtoMapper::mapProductToProductDto)
-                .orElseThrow(
-                        () -> new ProductNotFoundException(generateExceptionMessage(FIELD_CODE, code))
-                );
+        if (repository.deleteByCode(code)) {
+            return true;
+        }
+        throw new ProductNotFoundException(generateExceptionMessage(FIELD_CODE, code));
     }
 
     /**

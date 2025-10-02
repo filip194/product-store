@@ -43,7 +43,4 @@ public class RoleEntity {
     @UpdateTimestamp
     private Timestamp updated;
 
-    @Column(name = "deleted")
-    private Timestamp deleted;
-
 }

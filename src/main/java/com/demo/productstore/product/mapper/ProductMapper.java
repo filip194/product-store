@@ -29,11 +29,9 @@ public class ProductMapper {
                 entity.getName(),
                 entity.getDescription(),
                 new Price(entity.getPriceEur()),
-                new Price(entity.getPriceUsd()),
                 entity.isAvailable(),
                 entity.getCreated(),
-                entity.getUpdated(),
-                entity.getDeleted()
+                entity.getUpdated()
         );
     }
 
@@ -50,7 +48,6 @@ public class ProductMapper {
                 product.name(),
                 product.description(),
                 product.priceEur(),
-                product.priceUsd(),
                 product.isAvailable()
         );
     }
@@ -66,7 +63,6 @@ public class ProductMapper {
         entity.setName(Optional.ofNullable(productUpdate.name()).orElse(entity.getName()));
         entity.setDescription(Optional.ofNullable(productUpdate.description()).orElse(entity.getDescription()));
         entity.setPriceEur(Optional.ofNullable(productUpdate.priceEur()).map(Price::value).orElse(entity.getPriceEur()));
-        entity.setPriceUsd(Optional.ofNullable(productUpdate.priceUsd()).map(Price::value).orElse(entity.getPriceUsd()));
         entity.setAvailable(Optional.of(productUpdate.isAvailable()).orElse(entity.isAvailable()));
     }
 
@@ -83,7 +79,6 @@ public class ProductMapper {
                 productCreate.name(),
                 productCreate.description(),
                 productCreate.priceEur(),
-                productCreate.priceUsd(),
                 productCreate.isAvailable()
         );
     }

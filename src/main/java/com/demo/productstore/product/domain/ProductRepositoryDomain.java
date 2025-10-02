@@ -52,6 +52,6 @@ public interface ProductRepositoryDomain {
      * @param code the product code
      * @return an Optional containing the soft-deleted Product, or empty if not found
      */
-    Optional<Product> softDeleteByCode(String code);
+    boolean deleteByCode(String code);
 
 }

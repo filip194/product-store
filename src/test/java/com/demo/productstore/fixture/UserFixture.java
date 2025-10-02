@@ -24,7 +24,6 @@ public class UserFixture {
                 25,
                 timestamp,
                 timestamp,
-                null,
                 new HashSet<>()
         );
     }

@@ -17,8 +17,7 @@ public class RoleFixture {
                 "ADMIN",
                 new HashSet<>(),
                 timestamp,
-                timestamp,
-                null
+                timestamp
         );
     }
 
@@ -30,8 +29,7 @@ public class RoleFixture {
                 "USER",
                 new HashSet<>(),
                 timestamp,
-                timestamp,
-                null
+                timestamp
         );
     }
 
@@ -43,8 +41,7 @@ public class RoleFixture {
                 "AUTHENTICATED_USER",
                 new HashSet<>(),
                 timestamp,
-                timestamp,
-                null
+                timestamp
         );
     }
 }

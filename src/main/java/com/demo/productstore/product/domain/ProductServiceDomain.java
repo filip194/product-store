@@ -51,9 +51,8 @@ public interface ProductServiceDomain {
      * Deletes a Product by its code.
      *
      * @param code the product code
-     * @return the deleted Product DTO
      */
-    ProductDto deleteProductByCode(String code);
+    boolean deleteProductByCode(String code);
 
     /**
      * Converts a given price to USD based on the specified currency code.

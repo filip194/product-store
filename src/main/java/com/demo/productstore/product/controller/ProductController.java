@@ -19,6 +19,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -47,7 +48,7 @@ public class ProductController {
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a new product", security = @SecurityRequirement(name = "basicScheme"))
-    public ResponseEntity<ApiResponse<ProductDto>> createProduct(@RequestBody ProductCreateDto body) {
+    public ResponseEntity<ApiResponse<ProductDto>> createProduct(@Validated @RequestBody ProductCreateDto body) {
         log.info("Received request to create product with code '{}'", body.getCode());
         var response = service.createProduct(body);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.with(response));
@@ -98,7 +99,7 @@ public class ProductController {
     @Operation(summary = "Update product by code", security = @SecurityRequirement(name = "basicScheme"))
     public ResponseEntity<ApiResponse<ProductDto>> updateProductByCode(
             @PathVariable("code") String code,
-            @RequestBody ProductUpdateDto body) {
+            @Validated @RequestBody ProductUpdateDto body) {
         log.info("Received request to update product with code '{}'", code);
         var response = service.updateProductByCode(code, body);
         return ResponseEntity.ok(ApiResponse.with(response));
@@ -113,10 +114,11 @@ public class ProductController {
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @DeleteMapping(value = "/{code}")
     @Operation(summary = "Delete product by code", security = @SecurityRequirement(name = "basicScheme"))
-    public ResponseEntity<ApiResponse<ProductDto>> deleteProductByCode(@PathVariable("code") String code) {
+    public ResponseEntity<Void> deleteProductByCode(@PathVariable("code") String code) {
         log.info("Received request to delete product with code '{}'", code);
         var response = service.deleteProductByCode(code);
-        return ResponseEntity.ok(ApiResponse.with(response));
+
+        return response ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
 }

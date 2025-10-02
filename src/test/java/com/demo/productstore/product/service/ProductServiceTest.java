@@ -104,9 +104,9 @@ class ProductServiceTest {
     void shouldDeleteProductByCode() {
         service.createProduct(createProductCreateDto("P400000000", new BigDecimal("12.00")));
 
-        final ProductDto deleted = service.deleteProductByCode("P400000000");
+        final boolean deleted = service.deleteProductByCode("P400000000");
 
-        assertEquals("P400000000", deleted.getCode());
+        assertTrue(deleted);
         assertThrows(ProductNotFoundException.class, () -> service.getProductByCode("P400000000"));
     }
 

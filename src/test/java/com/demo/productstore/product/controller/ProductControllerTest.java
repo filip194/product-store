@@ -101,15 +101,11 @@ class ProductControllerTest {
 
     @Test
     void shouldDeleteProductByCode_200Ok() {
-        when(service.deleteProductByCode("DEL1234567")).thenReturn(productDto);
+        when(service.deleteProductByCode("DEL1234567")).thenReturn(true);
 
-        final ResponseEntity<ApiResponse<ProductDto>> response = controller.deleteProductByCode("DEL1234567");
+        final ResponseEntity<Void> response = controller.deleteProductByCode("DEL1234567");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        if (responseAvailable(response.getBody())) {
-            assertSame(productDto, response.getBody().getResponse());
-        }
         verify(service).deleteProductByCode("DEL1234567");
     }
 

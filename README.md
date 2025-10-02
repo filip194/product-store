@@ -43,10 +43,10 @@ This application provides one API: _product_.
 
 #### Run configurations
 
-There are also three run configurations available (if using IntelliJ IDEA):
-- App - postgresql - runs application with PostgreSQL database (for production purposes and available in docker compose)
-- App - postgresdev - runs application with PostgreSQL database (for development purposes)
-- App - h2dev - runs application with H2 in-memory database (for development purposes)
+There are also two run configurations available for development (if using IntelliJ IDEA):
+
+- App - postgresdev - runs application with PostgreSQL database
+- App - h2dev - runs application with H2 in-memory database
 
 ### Logging into application
 
@@ -97,6 +97,5 @@ Both users have access to product API to create, read, update, and delete produc
 - Testing:
     - JUnit 5
     - Mockito
-    - WireMock
 - Logging:
     - SLF4J with Logback

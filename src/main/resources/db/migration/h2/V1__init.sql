@@ -9,11 +9,9 @@ CREATE TABLE IF NOT EXISTS product.product (
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
     price_eur NUMERIC CHECK (price_eur >= 0) NOT NULL,
-    price_usd NUMERIC CHECK (price_usd >= 0) NOT NULL, -- calculate WITH help of HNB API
     is_available BOOLEAN DEFAULT TRUE,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    deleted TIMESTAMP,
     PRIMARY KEY (id)
 );
 
@@ -29,7 +27,6 @@ CREATE TABLE IF NOT EXISTS product.users (
     age INT,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    deleted TIMESTAMP,
     PRIMARY KEY (id)
 );
 
@@ -39,7 +36,6 @@ CREATE TABLE IF NOT EXISTS product.roles (
     name VARCHAR(255) NOT NULL,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    deleted TIMESTAMP,
     PRIMARY KEY (id)
 );
 

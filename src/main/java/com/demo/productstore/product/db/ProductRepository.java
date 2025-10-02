@@ -48,7 +48,6 @@ public class ProductRepository implements ProductRepositoryDomain {
     public Optional<Product> findByCode(String code) {
         log.info("Finding product by code '{}'", code);
         return repository.findByCode(code)
-                .filter(productEntity -> Objects.isNull(productEntity.getDeleted()))
                 .map(ProductMapper::mapToProduct);
     }
 
@@ -62,7 +61,6 @@ public class ProductRepository implements ProductRepositoryDomain {
     public Collection<Product> findAll(Pageable pageable) {
         log.info("Finding all products - page size: {}, page index: {}", pageable.getPageSize(), pageable.getPageNumber());
         return repository.findAll(pageable).stream()
-                .filter(productEntity -> Objects.isNull(productEntity.getDeleted()))
                 .map(ProductMapper::mapToProduct)
                 .toList();
     }
@@ -77,9 +75,7 @@ public class ProductRepository implements ProductRepositoryDomain {
     @Override
     public Optional<Product> updateByCode(String code, ProductUpdate productUpdate) {
         log.info("Updating product with code '{}'", code);
-        final var entity = repository
-                .findByCode(code)
-                .filter(productEntity -> Objects.isNull(productEntity.getDeleted()));
+        final var entity = repository.findByCode(code);
 
         if (entity.isPresent()) {
             final var updatedEntity = entity.get();
@@ -99,20 +95,17 @@ public class ProductRepository implements ProductRepositoryDomain {
      * @return an Optional containing the soft-deleted Product, or empty if not found
      */
     @Override
-    public Optional<Product> softDeleteByCode(String code) {
+    public boolean deleteByCode(String code) {
         log.info("Soft deleting product with code '{}'", code);
-        final var entity = repository
-                .findByCode(code)
-                .filter(productEntity -> Objects.isNull(productEntity.getDeleted()));
-
-        if (entity.isPresent()) {
-            entity.get().setDeleted(Timestamp.from(Instant.now()));
-            repository.save(entity.get());
+        try {
+            repository.deleteByCode(code);
             log.info("Product with code '{}' soft deleted", code);
-            return Optional.of(ProductMapper.mapToProduct(entity.get()));
+            return true;
+        } catch (Exception e) {
+            log.warn("Product with code '{}' not found for deletion", code);
         }
-        log.warn("Product with code '{}' not found for soft delete", code);
-        return Optional.empty();
+
+        return false;
     }
 
 }
