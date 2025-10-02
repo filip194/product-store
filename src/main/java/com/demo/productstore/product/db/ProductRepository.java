@@ -96,10 +96,10 @@ public class ProductRepository implements ProductRepositoryDomain {
      */
     @Override
     public boolean deleteByCode(String code) {
-        log.info("Soft deleting product with code '{}'", code);
+        log.info("Deleting product with code '{}'", code);
         try {
             repository.deleteByCode(code);
-            log.info("Product with code '{}' soft deleted", code);
+            log.info("Product with code '{}' deleted", code);
             return true;
         } catch (Exception e) {
             log.warn("Product with code '{}' not found for deletion", code);

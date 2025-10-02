@@ -9,9 +9,11 @@ import com.demo.productstore.currency.model.CurrencyCountryCode;
 import com.demo.productstore.currency.model.Price;
 import com.demo.productstore.product.domain.ProductRepositoryDomain;
 import com.demo.productstore.product.domain.ProductServiceDomain;
+import com.demo.productstore.product.exception.ProductAlreadyExistsException;
 import com.demo.productstore.product.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +51,12 @@ public class ProductService implements ProductServiceDomain {
         log.info("Creating new product with code '{}'", productCreateDto.getCode());
         final var productCreate = ProductDtoMapper.mapProductCreateDtoToProductCreate(productCreateDto);
         final var priceUsd = convertPriceToUsd(productCreateDto.getPriceEur(), USD_COUNTRY_CODE);
-        return ProductDtoMapper.mapProductToProductDto(repository.persist(productCreate), priceUsd);
+        try {
+            return ProductDtoMapper.mapProductToProductDto(repository.persist(productCreate), priceUsd);
+        } catch (DataIntegrityViolationException e) {
+            log.error("Product with code '{}' already exists", productCreateDto.getCode());
+            throw new ProductAlreadyExistsException("Product with code '" + productCreateDto.getCode() + "' already exists");
+        }
     }
 
     /**

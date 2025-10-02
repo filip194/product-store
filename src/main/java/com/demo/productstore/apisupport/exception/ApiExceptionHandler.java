@@ -1,6 +1,7 @@
 package com.demo.productstore.apisupport.exception;
 
 
+import com.demo.productstore.product.exception.ProductAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,20 @@ public class ApiExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ApiResponse.withError(ex.getMessage(), String.valueOf(HttpStatus.NOT_FOUND.value())));
+    }
+
+    /**
+     * Handles ProductAlreadyExistsException and returns a 409 Conflict response with an error message.
+     *
+     * @param ex the ProductAlreadyExistsException instance
+     * @return a ResponseEntity containing an ApiResponse with the error details
+     */
+    @ExceptionHandler(ProductAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse<Void>> productAlreadyExistsExceptionHandler(ProductAlreadyExistsException ex) {
+        log.error("Duplicate", ex);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ApiResponse.withError(ex.getMessage(), String.valueOf(HttpStatus.CONFLICT.value())));
     }
 
     /**

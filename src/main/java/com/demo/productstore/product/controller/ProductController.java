@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
@@ -114,7 +116,7 @@ public class ProductController {
     @RolesAllowed(UserRole.AUTHENTICATED_USER_ROLE)
     @DeleteMapping(value = "/{code}")
     @Operation(summary = "Delete product by code", security = @SecurityRequirement(name = "basicScheme"))
-    public ResponseEntity<Void> deleteProductByCode(@PathVariable("code") String code) {
+    public ResponseEntity<Void> deleteProductByCode(@Size(min = 10, max = 10, message = "Product code should be exactly 10 characters long") @PathVariable("code") String code) {
         log.info("Received request to delete product with code '{}'", code);
         var response = service.deleteProductByCode(code);
 

@@ -20,6 +20,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RoleEntity {
 
+    public RoleEntity() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
