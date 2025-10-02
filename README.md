@@ -41,6 +41,12 @@ This application provides one API: _product_.
 - to stop docker containers run:
   - `docker compose down`
 
+#### If Postgres in Docker won't start
+
+- In some cases Postgres in Docker won't be able to load script: `product-store/docker/database/scripts/01-init.sh`, and it won't start properly.
+- To fix this, you need to got to the end of `01-init.sh` file where `EOSQL` line is, and add new line after it, or remove line after it.
+- It seems like CR needs to be replaced with LF, or vice versa.
+
 #### Run configurations
 
 There are also two run configurations available for development (if using IntelliJ IDEA):
