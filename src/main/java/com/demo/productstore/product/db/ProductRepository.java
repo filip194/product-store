@@ -35,7 +35,7 @@ public class ProductRepository implements ProductRepositoryDomain {
     @Override
     public Product persist(ProductCreate productCreate) {
         log.info("Persisting new product with code '{}'", productCreate.code());
-        return ProductMapper.mapToProduct(repository.save(ProductMapper.mapToProductEntity(productCreate)));
+        return ProductMapper.mapToProduct(repository.save(ProductMapper.mapProductCreateToProductEntity(productCreate)));
     }
 
     /**
@@ -83,7 +83,7 @@ public class ProductRepository implements ProductRepositoryDomain {
 
         if (entity.isPresent()) {
             final var updatedEntity = entity.get();
-            ProductMapper.mapToProductEntity(updatedEntity, productUpdate);
+            ProductMapper.mapProductUpdateToProductEntity(updatedEntity, productUpdate);
             updatedEntity.setUpdated(Timestamp.from(Instant.now()));
             log.info("Product with code '{}' updated", code);
             return Optional.of(ProductMapper.mapToProduct(repository.save(updatedEntity)));

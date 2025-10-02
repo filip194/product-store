@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductMapperTest {
 
     @Test
-    void testMapToProduct() {
+    void shouldMapProductEntityToProduct() {
         final UUID externalId = UUID.randomUUID();
         final Timestamp timestamp = Timestamp.from(Instant.now());
 
@@ -49,7 +49,7 @@ class ProductMapperTest {
     }
 
     @Test
-    void testMapToProductEntityFromProduct() {
+    void shouldMapProductToProductEntity() {
         final UUID externalId = UUID.randomUUID();
         final Timestamp timestamp = Timestamp.from(Instant.now());
 
@@ -67,7 +67,7 @@ class ProductMapperTest {
                 null
         );
 
-        final ProductEntity entity = ProductMapper.mapToProductEntity(product);
+        final ProductEntity entity = ProductMapper.mapProductToProductEntity(product);
 
         assertEquals(externalId, entity.getExternalId());
         assertEquals("CODE123456", entity.getCode());
@@ -79,7 +79,7 @@ class ProductMapperTest {
     }
 
     @Test
-    void testMapToProductEntityWithProductUpdate() {
+    void shouldMapProductUpdateToProductEntity() {
         final ProductEntity entity = new ProductEntity();
 
         entity.setName("Old Name");
@@ -96,7 +96,7 @@ class ProductMapperTest {
                 true
         );
 
-        ProductMapper.mapToProductEntity(entity, update);
+        ProductMapper.mapProductUpdateToProductEntity(entity, update);
 
         assertEquals("New Name", entity.getName());
         assertEquals("Old Description", entity.getDescription());
@@ -106,7 +106,7 @@ class ProductMapperTest {
     }
 
     @Test
-    void testMapToProductEntityFromProductCreate() {
+    void shouldMapProductCreateToProductEntity() {
         final ProductCreate create = new ProductCreate(
                 new ProductCode("CODE123456"),
                 "Test Product",
@@ -116,7 +116,7 @@ class ProductMapperTest {
                 true
         );
 
-        final ProductEntity entity = ProductMapper.mapToProductEntity(create);
+        final ProductEntity entity = ProductMapper.mapProductCreateToProductEntity(create);
 
         assertNotNull(entity.getExternalId());
         assertEquals("CODE123456", entity.getCode());

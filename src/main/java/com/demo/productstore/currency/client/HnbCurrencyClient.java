@@ -20,9 +20,9 @@ import java.util.Objects;
 @Slf4j
 public class HnbCurrencyClient implements CurrencyClient {
 
-    private static final String HNB_API_BASE_URL = "https://api.hnb.hr/tecajn-eur";
-    private static final String HNB_API_VERSION = "v3";
-    private static final String HNB_API_CURRENCY_QUERY_PARAM = "valuta";
+    public static final String HNB_API_BASE_URL = "https://api.hnb.hr/tecajn-eur";
+    public static final String HNB_API_VERSION = "v3";
+    public static final String HNB_API_CURRENCY_QUERY_PARAM = "valuta";
 
     /**
      * Fetches the mid-market exchange rate for the specified currency from the Croatian National Bank (HNB) API.

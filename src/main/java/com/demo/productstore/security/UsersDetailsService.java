@@ -54,7 +54,7 @@ public class UsersDetailsService implements UserDetailsService {
      * @param userEntity the user entity
      * @return a collection of granted authorities
      */
-    private Collection<? extends GrantedAuthority> assignAuthoritiesToUser(UserEntity userEntity) {
+    public Collection<? extends GrantedAuthority> assignAuthoritiesToUser(UserEntity userEntity) {
         final Collection<UserAuthority> authorities = new HashSet<>();
         userEntity.getRoles().forEach(roleEntity -> authorities.add(UserAuthority.valueOf(roleEntity.getName())));
         authorities.add(UserAuthority.AUTHENTICATED_USER);

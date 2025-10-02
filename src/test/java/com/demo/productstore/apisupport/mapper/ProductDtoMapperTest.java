@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ProductDtoMapperTest {
 
     @Test
-    void testMapProductCreateDtoToProductCreate() {
+    void shouldMapProductCreateDtoToProductCreate() {
         final ProductCreateDto dto = new ProductCreateDto();
         dto.setCode("CODE123456");
         dto.setName("Test Product");
@@ -40,7 +40,7 @@ class ProductDtoMapperTest {
     }
 
     @Test
-    void testMapProductUpdateDtoToProductUpdate() {
+    void shouldMapProductUpdateDtoToProductUpdate() {
         final ProductUpdateDto dto = new ProductUpdateDto();
         dto.setName("Updated Name");
         dto.setDescription("Updated Description");
@@ -58,7 +58,7 @@ class ProductDtoMapperTest {
     }
 
     @Test
-    void testMapProductToProductDto() {
+    void shouldMapProductToProductDto() {
         final UUID externalId = UUID.randomUUID();
         final Timestamp timestamp = Timestamp.from(Instant.now());
 

@@ -9,10 +9,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,42 +31,39 @@ class UsersDetailsServiceTest {
     private UsersDetailsService usersDetailsService;
 
     @Test
-    void testLoadUserByUsername_UserFound() {
-        UserEntity user = UserFixture.createUserEntity();
-        user.setUsername("testuser");
-        user.setPassword("password");
-        user.setRoles(Set.of(RoleFixture.createRoleEntity()));
+    void shouldLoadUserByUsername_UserFound() {
+        final UserEntity user = UserFixture.createUserEntity();
+        user.setRoles(Set.of(RoleFixture.createAdminRoleEntity(), RoleFixture.createAuthenticatedUserRoleEntity()));
 
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(user));
-
-        var userDetails = usersDetailsService.loadUserByUsername("testuser");
+        final UserDetails userDetails = usersDetailsService.loadUserByUsername("testuser");
 
         assertEquals("testuser", userDetails.getUsername());
         assertEquals("password", userDetails.getPassword());
         assertTrue(userDetails.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ADMIN")));
+                .anyMatch(a -> a.getAuthority().equals(UserRole.ADMIN_ROLE)));
         assertTrue(userDetails.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("AUTHENTICATED_USER")));
+                .anyMatch(a -> a.getAuthority().equals(UserRole.AUTHENTICATED_USER_ROLE)));
     }
 
     @Test
-    void testLoadUserByUsername_UserNotFound() {
+    void shouldFindUserByUsername_UserNotFound() {
         when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
         assertThrows(UsernameNotFoundException.class, () -> usersDetailsService.loadUserByUsername("unknown"));
     }
 
     @Test
-    void testAssignAuthoritiesToUser_AddsAuthenticatedUser() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        UserEntity user = UserFixture.createUserEntity();
-        user.setRoles(Collections.emptySet());
+    void shouldAssignAuthoritiesToUser_AddsAuthenticatedUser() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        final UserEntity user = UserFixture.createUserEntity();
+        user.setRoles(Set.of(RoleFixture.createAdminRoleEntity(), RoleFixture.createAuthenticatedUserRoleEntity()));
 
-        var authorities = usersDetailsService
-                .getClass()
-                .getDeclaredMethod("assignAuthoritiesToUser", UserEntity.class)
-                .invoke(usersDetailsService, user);
+        final Collection<? extends GrantedAuthority> authorities = usersDetailsService.assignAuthoritiesToUser(user);
 
         assertTrue(((java.util.Collection<?>) authorities).stream()
                 .anyMatch(a -> ((org.springframework.security.core.GrantedAuthority) a)
-                        .getAuthority().equals("AUTHENTICATED_USER")));
+                        .getAuthority().equals(UserRole.AUTHENTICATED_USER_ROLE)));
+        assertTrue(((java.util.Collection<?>) authorities).stream()
+                .anyMatch(a -> ((org.springframework.security.core.GrantedAuthority) a)
+                        .getAuthority().equals(UserRole.ADMIN_ROLE)));
     }
 }

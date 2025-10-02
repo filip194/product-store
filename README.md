@@ -22,6 +22,10 @@ This application provides one API: _product_.
 
 **product** API enables product registration, search, update and deletion.
 
+#### System requirements
+
+- Docker
+
 ### Running application
 
 - open project root directory in terminal

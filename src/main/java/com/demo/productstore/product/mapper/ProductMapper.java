@@ -43,7 +43,7 @@ public class ProductMapper {
      * @param product the Product domain model to map
      * @return the mapped ProductEntity
      */
-    public static ProductEntity mapToProductEntity(Product product) {
+    public static ProductEntity mapProductToProductEntity(Product product) {
         return new ProductEntity(
                 product.externalId(),
                 new ProductCode(product.code().value()),
@@ -62,7 +62,7 @@ public class ProductMapper {
      * @param entity        the ProductEntity to update
      * @param productUpdate the ProductUpdate containing new values
      */
-    public static void mapToProductEntity(ProductEntity entity, ProductUpdate productUpdate) {
+    public static void mapProductUpdateToProductEntity(ProductEntity entity, ProductUpdate productUpdate) {
         entity.setName(Optional.ofNullable(productUpdate.name()).orElse(entity.getName()));
         entity.setDescription(Optional.ofNullable(productUpdate.description()).orElse(entity.getDescription()));
         entity.setPriceEur(Optional.ofNullable(productUpdate.priceEur()).map(Price::value).orElse(entity.getPriceEur()));
@@ -76,7 +76,7 @@ public class ProductMapper {
      * @param productCreate the ProductCreate to map
      * @return the mapped ProductEntity
      */
-    public static ProductEntity mapToProductEntity(ProductCreate productCreate) {
+    public static ProductEntity mapProductCreateToProductEntity(ProductCreate productCreate) {
         return new ProductEntity(
                 UUID.randomUUID(),
                 productCreate.code(),
