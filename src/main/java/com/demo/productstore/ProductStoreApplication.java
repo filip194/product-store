@@ -3,12 +3,14 @@ package com.demo.productstore;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Main application class for the Product Store application.
  */
 @SpringBootApplication
 @EnableCaching
+@EnableScheduling
 public class ProductStoreApplication {
 
     /**
